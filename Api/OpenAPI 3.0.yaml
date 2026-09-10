@@ -1,0 +1,713 @@
+openapi: 3.0.3
+
+info:
+  title: API REST - Sistema de Votaciones
+  version: "1.0.0"
+  description: >
+    API REST para la gestión del Sistema de Votaciones.
+    Permite autenticar usuarios, administrar votaciones y candidatos,
+    registrar resultados y consultar resultados electorales.
+
+servers:
+  - url: http://localhost/sistema_votaciones/api/v1
+    description: Servidor local de desarrollo
+
+tags:
+  - name: Autenticacion
+    description: Operaciones de autenticación
+  - name: Votaciones
+    description: Gestión de procesos electorales
+  - name: Candidatos
+    description: Gestión de candidatos
+  - name: Resultados
+    description: Registro y consulta de resultados
+
+security:
+  - bearerAuth: []
+
+paths:
+
+  /auth/login:
+    post:
+      tags:
+        - Autenticacion
+      summary: Iniciar sesión
+      description: Valida las credenciales del usuario y devuelve un token JWT.
+      operationId: login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Autenticación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /votaciones:
+    get:
+      tags:
+        - Votaciones
+      summary: Listar votaciones
+      operationId: listarVotaciones
+      responses:
+        '200':
+          description: Lista de votaciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Votacion'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    post:
+      tags:
+        - Votaciones
+      summary: Crear una votación
+      operationId: crearVotacion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VotacionCreateRequest'
+      responses:
+        '201':
+          description: Votación creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Votacion'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /votaciones/{votacionId}:
+    parameters:
+      - $ref: '#/components/parameters/VotacionId'
+
+    get:
+      tags:
+        - Votaciones
+      summary: Obtener una votación por ID
+      operationId: obtenerVotacion
+      responses:
+        '200':
+          description: Votación encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Votacion'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    put:
+      tags:
+        - Votaciones
+      summary: Actualizar completamente una votación
+      operationId: actualizarVotacion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VotacionUpdateRequest'
+      responses:
+        '200':
+          description: Votación actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Votacion'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    patch:
+      tags:
+        - Votaciones
+      summary: Actualizar parcialmente una votación
+      operationId: actualizarParcialVotacion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VotacionPatchRequest'
+      responses:
+        '200':
+          description: Votación actualizada parcialmente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Votacion'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    delete:
+      tags:
+        - Votaciones
+      summary: Eliminar una votación
+      operationId: eliminarVotacion
+      responses:
+        '204':
+          description: Votación eliminada correctamente
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /votaciones/{votacionId}/candidatos:
+    parameters:
+      - $ref: '#/components/parameters/VotacionId'
+
+    get:
+      tags:
+        - Candidatos
+      summary: Listar candidatos de una votación
+      operationId: listarCandidatos
+      responses:
+        '200':
+          description: Lista de candidatos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Candidato'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    post:
+      tags:
+        - Candidatos
+      summary: Registrar un candidato en una votación
+      operationId: crearCandidato
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CandidatoCreateRequest'
+      responses:
+        '201':
+          description: Candidato registrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Candidato'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /resultados:
+    post:
+      tags:
+        - Resultados
+      summary: Registrar resultado de una mesa
+      description: Registra los votos obtenidos por un candidato en una mesa determinada.
+      operationId: registrarResultado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResultadoCreateRequest'
+      responses:
+        '201':
+          description: Resultado registrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resultado'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /votaciones/{votacionId}/resultados:
+    parameters:
+      - $ref: '#/components/parameters/VotacionId'
+
+    get:
+      tags:
+        - Resultados
+      summary: Consultar resultados de una votación
+      description: Obtiene los resultados consolidados de una votación.
+      operationId: obtenerResultadosVotacion
+      responses:
+        '200':
+          description: Resultados de la votación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultadosVotacion'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Token JWT obtenido mediante POST /auth/login
+
+  parameters:
+    VotacionId:
+      name: votacionId
+      in: path
+      required: true
+      description: Identificador único de la votación
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+      example: 1
+
+  schemas:
+
+    LoginRequest:
+      type: object
+      required:
+        - usuario
+        - password
+      properties:
+        usuario:
+          type: string
+          example: digitador01
+        password:
+          type: string
+          format: password
+          example: MiClaveSegura123!
+
+    LoginResponse:
+      type: object
+      required:
+        - accessToken
+        - tokenType
+        - expiresIn
+        - usuario
+      properties:
+        accessToken:
+          type: string
+          description: Token JWT
+          example: eyJhbGciOiJIUzI1NiJ9...
+        tokenType:
+          type: string
+          example: Bearer
+        expiresIn:
+          type: integer
+          description: Tiempo de expiración en segundos
+          example: 3600
+        usuario:
+          $ref: '#/components/schemas/UsuarioResumen'
+
+    UsuarioResumen:
+      type: object
+      required:
+        - id
+        - usuario
+        - rol
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 15
+        usuario:
+          type: string
+          example: digitador01
+        rol:
+          type: string
+          example: DIGITADOR
+
+    Votacion:
+      type: object
+      required:
+        - id
+        - nombre
+        - fechaInicio
+        - fechaFin
+        - estado
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        nombre:
+          type: string
+          example: Elección General 2026
+        descripcion:
+          type: string
+          example: Proceso electoral general
+        fechaInicio:
+          type: string
+          format: date-time
+          example: "2026-09-10T08:00:00-06:00"
+        fechaFin:
+          type: string
+          format: date-time
+          example: "2026-09-10T18:00:00-06:00"
+        estado:
+          type: string
+          enum:
+            - PROGRAMADA
+            - ABIERTA
+            - CERRADA
+            - CANCELADA
+          example: PROGRAMADA
+
+    VotacionCreateRequest:
+      type: object
+      required:
+        - nombre
+        - fechaInicio
+        - fechaFin
+      properties:
+        nombre:
+          type: string
+          minLength: 3
+          maxLength: 150
+          example: Elección General 2026
+        descripcion:
+          type: string
+          maxLength: 500
+          example: Proceso electoral general
+        fechaInicio:
+          type: string
+          format: date-time
+          example: "2026-09-10T08:00:00-06:00"
+        fechaFin:
+          type: string
+          format: date-time
+          example: "2026-09-10T18:00:00-06:00"
+
+    VotacionUpdateRequest:
+      type: object
+      required:
+        - nombre
+        - fechaInicio
+        - fechaFin
+        - estado
+      properties:
+        nombre:
+          type: string
+          minLength: 3
+          maxLength: 150
+        descripcion:
+          type: string
+          maxLength: 500
+        fechaInicio:
+          type: string
+          format: date-time
+        fechaFin:
+          type: string
+          format: date-time
+        estado:
+          type: string
+          enum:
+            - PROGRAMADA
+            - ABIERTA
+            - CERRADA
+            - CANCELADA
+
+    VotacionPatchRequest:
+      type: object
+      minProperties: 1
+      properties:
+        nombre:
+          type: string
+          minLength: 3
+          maxLength: 150
+        descripcion:
+          type: string
+          maxLength: 500
+        fechaInicio:
+          type: string
+          format: date-time
+        fechaFin:
+          type: string
+          format: date-time
+        estado:
+          type: string
+          enum:
+            - PROGRAMADA
+            - ABIERTA
+            - CERRADA
+            - CANCELADA
+
+    Candidato:
+      type: object
+      required:
+        - id
+        - votacionId
+        - nombre
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 7
+        votacionId:
+          type: integer
+          format: int64
+          example: 1
+        nombre:
+          type: string
+          example: Candidato A
+        partido:
+          type: string
+          example: Partido Ejemplo
+
+    CandidatoCreateRequest:
+      type: object
+      required:
+        - nombre
+      properties:
+        nombre:
+          type: string
+          minLength: 3
+          maxLength: 150
+          example: Candidato A
+        partido:
+          type: string
+          maxLength: 150
+          example: Partido Ejemplo
+
+    Resultado:
+      type: object
+      required:
+        - id
+        - votacionId
+        - mesaId
+        - candidatoId
+        - votos
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 100
+        votacionId:
+          type: integer
+          format: int64
+          example: 1
+        mesaId:
+          type: integer
+          format: int64
+          example: 25
+        candidatoId:
+          type: integer
+          format: int64
+          example: 7
+        votos:
+          type: integer
+          minimum: 0
+          example: 150
+        registradoEn:
+          type: string
+          format: date-time
+          example: "2026-09-10T18:15:00-06:00"
+
+    ResultadoCreateRequest:
+      type: object
+      required:
+        - votacionId
+        - mesaId
+        - candidatoId
+        - votos
+      properties:
+        votacionId:
+          type: integer
+          format: int64
+          minimum: 1
+          example: 1
+        mesaId:
+          type: integer
+          format: int64
+          minimum: 1
+          example: 25
+        candidatoId:
+          type: integer
+          format: int64
+          minimum: 1
+          example: 7
+        votos:
+          type: integer
+          minimum: 0
+          example: 150
+
+    ResultadoCandidato:
+      type: object
+      required:
+        - candidatoId
+        - nombreCandidato
+        - totalVotos
+      properties:
+        candidatoId:
+          type: integer
+          format: int64
+          example: 7
+        nombreCandidato:
+          type: string
+          example: Candidato A
+        totalVotos:
+          type: integer
+          minimum: 0
+          example: 12500
+        porcentaje:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+          example: 45.35
+
+    ResultadosVotacion:
+      type: object
+      required:
+        - votacionId
+        - nombreVotacion
+        - totalVotos
+        - resultados
+      properties:
+        votacionId:
+          type: integer
+          format: int64
+          example: 1
+        nombreVotacion:
+          type: string
+          example: Elección General 2026
+        totalVotos:
+          type: integer
+          minimum: 0
+          example: 27563
+        ultimaActualizacion:
+          type: string
+          format: date-time
+          example: "2026-09-10T19:00:00-06:00"
+        resultados:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResultadoCandidato'
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - error
+        - message
+      properties:
+        status:
+          type: integer
+          example: 400
+        error:
+          type: string
+          example: Bad Request
+        message:
+          type: string
+          example: Los datos enviados no son válidos.
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-09-06T12:45:00-06:00"
+
+  responses:
+
+    BadRequest:
+      description: Solicitud inválida
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: 400
+            error: Bad Request
+            message: Los datos enviados no son válidos.
+            timestamp: "2026-09-06T12:45:00-06:00"
+
+    Unauthorized:
+      description: No autenticado o token inválido
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: 401
+            error: Unauthorized
+            message: Token ausente, inválido o expirado.
+            timestamp: "2026-09-06T12:45:00-06:00"
+
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: 404
+            error: Not Found
+            message: El recurso solicitado no existe.
+            timestamp: "2026-09-06T12:45:00-06:00"
+
+    InternalError:
+      description: Error interno del servidor
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: 500
+            error: Internal Server Error
+            message: Ocurrió un error inesperado.
+            timestamp: "2026-09-06T12:45:00-06:00"

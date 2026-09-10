@@ -1,0 +1,118 @@
+<mxfile host="Electron">
+  <diagram name="Página-1" id="2E6RItdDknOGdUNSIhQK">
+    <mxGraphModel dx="1653" dy="841" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <UserObject label="" mermaidData="{&#xa;  &quot;data&quot;: &quot;flowchart LR \nADMIN[\&quot;Administrador Electoral&lt;br/&gt;&lt;br/&gt;Configura votaciones,&lt;br/&gt;usuarios, roles,&lt;br/&gt;mesas y candidatos\&quot;] \nDIG[\&quot;Digitador de Mesa&lt;br/&gt;&lt;br/&gt;Registra los votos&lt;br/&gt;obtenidos en cada&lt;br/&gt;mesa electoral\&quot;] \nSUP[\&quot;upervisor Electoral&lt;br/&gt;&lt;br/&gt;Revisa resultados,&lt;br/&gt;avance e inconsistencias\&quot;] \nSV[\&quot;SISTEMA DE VOTACIONES&lt;br/&gt;&lt;br/&gt;Administra usuarios, votaciones,&lt;br/&gt;mesas, candidatos y resultados.&lt;br/&gt;&lt;br/&gt;Expone una API REST para&lt;br/&gt;consumo de sistemas externos.\&quot;] \nCIU[\&quot;Ciudadano / Votante&lt;br/&gt;&lt;br/&gt;Consulta candidatos,&lt;br/&gt;resultados generales&lt;br/&gt;y totales de la elección\&quot;] \nMEDIO[\&quot;Medio de Comunicación&lt;br/&gt;&lt;br/&gt;Consulta resultados&lt;br/&gt;consolidados para&lt;br/&gt;publicación informativa\&quot;] \nENTIDAD[\&quot;Institución Electoral Externa&lt;br/&gt;&lt;br/&gt;Integra información electoral&lt;br/&gt;con otros sistemas&lt;br/&gt;institucionales\&quot;] \nAPP[\&quot;Aplicación / Portal Externo&lt;br/&gt;&lt;br/&gt;Consume votaciones,&lt;br/&gt;candidatos y resultados&lt;br/&gt;mediante la API REST\&quot;] \nADMIN --&gt;|\&quot;Gestiona usuarios,&lt;br/&gt;votaciones, mesas&lt;br/&gt;y candidatos\&quot;| SV \nDIG --&gt;|\&quot;Registra votos&lt;br/&gt;por mesa y candidato\&quot;| SV \nSUP --&gt;|\&quot;Consulta avance&lt;br/&gt;y verifica resultados\&quot;| SV \nSV --&gt;|\&quot;Publica candidatos&lt;br/&gt;y resultados\&quot;| CIU \nSV --&gt;|\&quot;API: resultados&lt;br/&gt;consolidados\&quot;| MEDIO \nSV --&gt;|\&quot;API: información&lt;br/&gt;electoral institucional\&quot;| ENTIDAD \nSV --&gt;|\&quot;API: votaciones,&lt;br/&gt;candidatos y resultados\&quot;| APP\n&quot;,&#xa;  &quot;config&quot;: null&#xa;}" id="juCDCi0u9cDDYqGjfS7n-1">
+          <mxCell connectable="0" parent="1" style="group;transparentBounds=1;editIcon=1;lockedGroup=0;groupPadding=10;" vertex="1">
+            <mxGeometry as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Administrador Electoral&#xa;&#xa;Configura votaciones,&#xa;usuarios, roles,&#xa;mesas y candidatos" mermaidId="n:ADMIN" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Administrador Electoral&#xa;&#xa;Configura votaciones,&#xa;usuarios, roles,&#xa;mesas y candidatos" id="juCDCi0u9cDDYqGjfS7n-2">
+          <mxCell parent="juCDCi0u9cDDYqGjfS7n-1" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="131" width="230" x="33" y="125" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Digitador de Mesa&#xa;&#xa;Registra los votos&#xa;obtenidos en cada&#xa;mesa electoral" mermaidId="n:DIG" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Digitador de Mesa&#xa;&#xa;Registra los votos&#xa;obtenidos en cada&#xa;mesa electoral" id="juCDCi0u9cDDYqGjfS7n-3">
+          <mxCell parent="juCDCi0u9cDDYqGjfS7n-1" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="131" width="191" x="53" y="306" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="upervisor Electoral&#xa;&#xa;Revisa resultados,&#xa;avance e inconsistencias" mermaidId="n:SUP" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="upervisor Electoral&#xa;&#xa;Revisa resultados,&#xa;avance e inconsistencias" id="juCDCi0u9cDDYqGjfS7n-4">
+          <mxCell parent="juCDCi0u9cDDYqGjfS7n-1" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="112" width="236" x="30" y="487" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="SISTEMA DE VOTACIONES&#xa;&#xa;Administra usuarios, votaciones,&#xa;mesas, candidatos y resultados.&#xa;&#xa;Expone una API REST para&#xa;consumo de sistemas externos." mermaidId="n:SV" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="SISTEMA DE VOTACIONES&#xa;&#xa;Administra usuarios, votaciones,&#xa;mesas, candidatos y resultados.&#xa;&#xa;Expone una API REST para&#xa;consumo de sistemas externos." id="juCDCi0u9cDDYqGjfS7n-5">
+          <mxCell parent="juCDCi0u9cDDYqGjfS7n-1" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="169" width="293" x="470" y="283" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Ciudadano / Votante&#xa;&#xa;Consulta candidatos,&#xa;resultados generales&#xa;y totales de la elección" mermaidId="n:CIU" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Ciudadano / Votante&#xa;&#xa;Consulta candidatos,&#xa;resultados generales&#xa;y totales de la elección" id="juCDCi0u9cDDYqGjfS7n-6">
+          <mxCell parent="juCDCi0u9cDDYqGjfS7n-1" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="131" width="227" x="1003" y="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Medio de Comunicación&#xa;&#xa;Consulta resultados&#xa;consolidados para&#xa;publicación informativa" mermaidId="n:MEDIO" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Medio de Comunicación&#xa;&#xa;Consulta resultados&#xa;consolidados para&#xa;publicación informativa" id="juCDCi0u9cDDYqGjfS7n-7">
+          <mxCell parent="juCDCi0u9cDDYqGjfS7n-1" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="131" width="230" x="1001" y="211" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Institución Electoral Externa&#xa;&#xa;Integra información electoral&#xa;con otros sistemas&#xa;institucionales" mermaidId="n:ENTIDAD" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Institución Electoral Externa&#xa;&#xa;Integra información electoral&#xa;con otros sistemas&#xa;institucionales" id="juCDCi0u9cDDYqGjfS7n-8">
+          <mxCell parent="juCDCi0u9cDDYqGjfS7n-1" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="131" width="270" x="981" y="392" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Aplicación / Portal Externo&#xa;&#xa;Consume votaciones,&#xa;candidatos y resultados&#xa;mediante la API REST" mermaidId="n:APP" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Aplicación / Portal Externo&#xa;&#xa;Consume votaciones,&#xa;candidatos y resultados&#xa;mediante la API REST" id="juCDCi0u9cDDYqGjfS7n-9">
+          <mxCell parent="juCDCi0u9cDDYqGjfS7n-1" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=light-dark(#ECECFF,#1f2020);strokeColor=light-dark(#9370DB,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="131" width="254" x="989" y="573" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Gestiona usuarios,&#xa;votaciones, mesas&#xa;y candidatos" mermaidId="e:ADMIN-&gt;SV#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.5;entryX=0.09;entryY=0;" mermaidBaseValue="Gestiona usuarios,&#xa;votaciones, mesas&#xa;y candidatos" id="juCDCi0u9cDDYqGjfS7n-10">
+          <mxCell edge="1" parent="juCDCi0u9cDDYqGjfS7n-1" source="juCDCi0u9cDDYqGjfS7n-2" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.5;entryX=0.09;entryY=0;rounded=0;" target="juCDCi0u9cDDYqGjfS7n-5">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="368" y="191" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="Registra votos&#xa;por mesa y candidato" mermaidId="e:DIG-&gt;SV#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.5;entryX=0;entryY=0.51;" mermaidBaseValue="Registra votos&#xa;por mesa y candidato" id="juCDCi0u9cDDYqGjfS7n-11">
+          <mxCell edge="1" parent="juCDCi0u9cDDYqGjfS7n-1" source="juCDCi0u9cDDYqGjfS7n-3" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.5;entryX=0;entryY=0.51;rounded=0;" target="juCDCi0u9cDDYqGjfS7n-5">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="368" y="372" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="Consulta avance&#xa;y verifica resultados" mermaidId="e:SUP-&gt;SV#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.5;entryX=0.09;entryY=1;" mermaidBaseValue="Consulta avance&#xa;y verifica resultados" id="juCDCi0u9cDDYqGjfS7n-12">
+          <mxCell edge="1" parent="juCDCi0u9cDDYqGjfS7n-1" source="juCDCi0u9cDDYqGjfS7n-4" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.5;entryX=0.09;entryY=1;rounded=0;" target="juCDCi0u9cDDYqGjfS7n-5">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="368" y="543" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="Publica candidatos&#xa;y resultados" mermaidId="e:SV-&gt;CIU#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.77;exitY=0;entryX=0;entryY=0.5;" mermaidBaseValue="Publica candidatos&#xa;y resultados" id="juCDCi0u9cDDYqGjfS7n-13">
+          <mxCell edge="1" parent="juCDCi0u9cDDYqGjfS7n-1" source="juCDCi0u9cDDYqGjfS7n-5" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.77;exitY=0;entryX=0;entryY=0.5;rounded=0;" target="juCDCi0u9cDDYqGjfS7n-6">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="872" y="96" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="API: resultados&#xa;consolidados" mermaidId="e:SV-&gt;MEDIO#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.19;entryX=0;entryY=0.5;" mermaidBaseValue="API: resultados&#xa;consolidados" id="juCDCi0u9cDDYqGjfS7n-14">
+          <mxCell edge="1" parent="juCDCi0u9cDDYqGjfS7n-1" source="juCDCi0u9cDDYqGjfS7n-5" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.19;entryX=0;entryY=0.5;rounded=0;" target="juCDCi0u9cDDYqGjfS7n-7">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="872" y="277" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="API: información&#xa;electoral institucional" mermaidId="e:SV-&gt;ENTIDAD#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.8;entryX=0;entryY=0.5;" mermaidBaseValue="API: información&#xa;electoral institucional" id="juCDCi0u9cDDYqGjfS7n-15">
+          <mxCell edge="1" parent="juCDCi0u9cDDYqGjfS7n-1" source="juCDCi0u9cDDYqGjfS7n-5" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.8;entryX=0;entryY=0.5;rounded=0;" target="juCDCi0u9cDDYqGjfS7n-8">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="872" y="458" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="API: votaciones,&#xa;candidatos y resultados" mermaidId="e:SV-&gt;APP#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.77;exitY=1;entryX=0;entryY=0.5;" mermaidBaseValue="API: votaciones,&#xa;candidatos y resultados" id="juCDCi0u9cDDYqGjfS7n-16">
+          <mxCell edge="1" parent="juCDCi0u9cDDYqGjfS7n-1" source="juCDCi0u9cDDYqGjfS7n-5" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.77;exitY=1;entryX=0;entryY=0.5;rounded=0;" target="juCDCi0u9cDDYqGjfS7n-9">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="872" y="639" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
