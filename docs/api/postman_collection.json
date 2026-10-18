@@ -1,0 +1,846 @@
+{
+  "info": {
+    "_postman_id": "dde99319-2b25-4e60-8879-b4d73bd0ad67",
+    "name": "VotaGT API - Proyecto Final",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58907422",
+    "_collection_link": "https://go.postman.co/collection/58907422-dde99319-2b25-4e60-8879-b4d73bd0ad67?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "01 - Autenticacion",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"La respuesta contiene token JWT\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.token).to.exist;\r\n});\r\n\r\nconst jsonData = pm.response.json();\r\n\r\nif (jsonData.token) {\r\n    pm.collectionVariables.set(\r\n        \"token\",\r\n        jsonData.token\r\n    );\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"identificador\": \"admin\",\r\n  \"password\": \"Admin123*\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Perfil",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"La respuesta es JSON\", function () {\r\n    pm.expect(\r\n        pm.response.headers.get(\"Content-Type\")\r\n    ).to.include(\"application/json\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "perfil"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Votaciones Copy",
+      "item": [
+        {
+          "name": "Listar votaciones",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"La respuesta es JSON\", function () {\r\n    pm.expect(\r\n        pm.response.headers.get(\"Content-Type\")\r\n    ).to.include(\"application/json\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/votaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear votación",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\nconst jsonData = pm.response.json();\r\n\r\nconst id =\r\n    jsonData?.datos?.id ||\r\n    jsonData?.id;\r\n\r\nif (id) {\r\n    pm.collectionVariables.set(\r\n        \"votacionId\",\r\n        id\r\n    );\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Elecciones de Prueba Postman\",\r\n  \"descripcion\": \"Votación creada desde colección Postman\",\r\n  \"fechaInicio\": \"2027-06-01T07:00:00\",\r\n  \"fechaFin\": \"2027-06-01T18:00:00\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/votaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Votación por ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/votaciones/{{votacionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones",
+                "{{votacionId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Candidatos",
+      "item": [
+        {
+          "name": "Listar candidatos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"La respuesta es JSON\", function () {\r\n    pm.expect(\r\n        pm.response.headers.get(\"Content-Type\")\r\n    ).to.include(\"application/json\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/votaciones/{{votacionId}}/candidatos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones",
+                "{{votacionId}}",
+                "candidatos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear candidato",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\nconst jsonData = pm.response.json();\r\n\r\nconst id =\r\n    jsonData?.datos?.id ||\r\n    jsonData?.id;\r\n\r\nif (id) {\r\n    pm.collectionVariables.set(\r\n        \"candidatoId\",\r\n        id\r\n    );\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Candidato Postman\",\r\n  \"partido\": \"Partido de Prueba\",\r\n  \"cargo\": \"Presidente\",\r\n  \"numeroLista\": 10\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/votaciones/{{votacionId}}/candidatos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones",
+                "{{votacionId}}",
+                "candidatos"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Mesas",
+      "item": [
+        {
+          "name": "Listar mesas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"La respuesta es JSON\", function () {\r\n    pm.expect(\r\n        pm.response.headers.get(\"Content-Type\")\r\n    ).to.include(\"application/json\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/votaciones/{{votacionId}}/mesas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones",
+                "{{votacionId}}",
+                "mesas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear mesa",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\nconst jsonData = pm.response.json();\r\n\r\nconst id =\r\n    jsonData?.datos?.id ||\r\n    jsonData?.id;\r\n\r\nif (id) {\r\n    pm.collectionVariables.set(\r\n        \"mesaId\",\r\n        id\r\n    );\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"codigo\": \"MESA-POSTMAN-01\",\r\n  \"nombre\": \"Mesa de Prueba Postman\",\r\n  \"ubicacion\": \"Centro Educativo de Prueba\",\r\n  \"departamento\": \"Guatemala\",\r\n  \"municipio\": \"Guatemala\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/votaciones/{{votacionId}}/mesas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones",
+                "{{votacionId}}",
+                "mesas"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Resultados",
+      "item": [
+        {
+          "name": "Registrar resultado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"El resultado fue registrado\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData).to.exist;\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"mesaId\": {{mesaId}},\r\n  \"candidatoId\": {{candidatoId}},\r\n  \"votos\": 150\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/votaciones/{{votacionId}}/resultados",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones",
+                "{{votacionId}}",
+                "resultados"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resultados - MISS",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"La respuesta es JSON\", function () {\r\n    pm.expect(\r\n        pm.response.headers.get(\"Content-Type\")\r\n    ).to.include(\"application/json\");\r\n});\r\n\r\npm.test(\"Cache MISS\", function () {\r\n    const jsonData = pm.response.json();\r\n\r\n    const datos = jsonData.datos || jsonData;\r\n\r\n    pm.expect(datos.cache).to.eql(\"MISS\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/votaciones/{{votacionId}}/resultados",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones",
+                "{{votacionId}}",
+                "resultados"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resultados - HIT",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Cache HIT\", function () {\r\n    const jsonData = pm.response.json();\r\n\r\n    const datos = jsonData.datos || jsonData;\r\n\r\n    pm.expect(datos.cache).to.eql(\"HIT\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/votaciones/{{votacionId}}/resultados",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones",
+                "{{votacionId}}",
+                "resultados"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Exportar resultados CSV",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/votaciones/{{votacionId}}/resultados/exportar?formato=csv",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones",
+                "{{votacionId}}",
+                "resultados",
+                "exportar"
+              ],
+              "query": [
+                {
+                  "key": "formato",
+                  "value": "csv"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Exportar resultados JSON",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/votaciones/{{votacionId}}/resultados/exportar?formato=json",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones",
+                "{{votacionId}}",
+                "resultados",
+                "exportar"
+              ],
+              "query": [
+                {
+                  "key": "formato",
+                  "value": "json"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Exportar formato inválido",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/votaciones/{{votacionId}}/resultados/exportar?formato=pdf",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones",
+                "{{votacionId}}",
+                "resultados",
+                "exportar"
+              ],
+              "query": [
+                {
+                  "key": "formato",
+                  "value": "pdf"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pruebas negativas",
+      "item": [
+        {
+          "name": "Resultado - 400 votos invalidos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", function () {\r\n    pm.response.to.have.status(400);\r\n});\r\n\r\npm.test(\"Formato Problem Details\", function () {\r\n    const jsonData = pm.response.json();\r\n\r\n    pm.expect(jsonData.status).to.eql(400);\r\n    pm.expect(jsonData.type).to.exist;\r\n    pm.expect(jsonData.title).to.exist;\r\n    pm.expect(jsonData.detail).to.exist;\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"mesaId\": {{mesaId}},\r\n  \"candidatoId\": {{candidatoId}},\r\n  \"votos\": -10\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/votaciones/{{votacionId}}/resultados",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones",
+                "{{votacionId}}",
+                "resultados"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Perfil - 401 sin token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 401\", function () {\r\n    pm.response.to.have.status(401);\r\n});\r\n\r\npm.test(\"Se requiere autenticacion\", function () {\r\n    const jsonData = pm.response.json();\r\n\r\n    pm.expect(jsonData.status).to.eql(401);\r\n    pm.expect(jsonData.detail).to.exist;\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "perfil"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Votacion inexistente - 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 404\", function () {\r\n    pm.response.to.have.status(404);\r\n});\r\n\r\npm.test(\"Recurso no encontrado\", function () {\r\n    const jsonData = pm.response.json();\r\n\r\n    pm.expect(jsonData.status).to.eql(404);\r\n    pm.expect(jsonData.detail).to.exist;\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/votaciones/99999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones",
+                "99999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resultado duplicado - 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 409\", function () {\r\n    pm.response.to.have.status(409);\r\n});\r\n\r\npm.test(\"Se detecta resultado duplicado\", function () {\r\n    const jsonData = pm.response.json();\r\n\r\n    pm.expect(jsonData.status).to.eql(409);\r\n    pm.expect(jsonData.detail).to.exist;\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"mesaId\": {{mesaId}},\r\n  \"candidatoId\": {{candidatoId}},\r\n  \"votos\": 150\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/votaciones/{{votacionId}}/resultados",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "votaciones",
+                "{{votacionId}}",
+                "resultados"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    },
+    {
+      "key": "votacionId",
+      "value": ""
+    },
+    {
+      "key": "candidatoId",
+      "value": ""
+    },
+    {
+      "key": "mesaId",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

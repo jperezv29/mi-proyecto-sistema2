@@ -1,0 +1,124 @@
+@startuml
+title VotaGT - Diagrama de Paquetes UML 2.5.1
+
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype ortho
+
+
+package "VotaGT Backend" {
+
+    package "Routes" {
+        [auth.routes]
+        [votacion.routes]
+        [candidato.routes]
+        [mesa.routes]
+        [resultado.routes]
+    }
+
+    package "Middlewares" {
+        [auth.middleware]
+        [permission.middleware]
+        [errorHandler]
+    }
+
+    package "Controllers" {
+        [auth.controller]
+        [votacion.controller]
+        [candidato.controller]
+        [mesa.controller]
+        [resultado.controller]
+    }
+
+    package "Services" {
+        [auth.service]
+        [votacion.service]
+        [candidato.service]
+        [mesa.service]
+        [resultado.service]
+    }
+
+    package "Repositories" {
+        [auth.repository]
+        [votacion.repository]
+        [candidato.repository]
+        [mesa.repository]
+        [resultado.repository]
+    }
+
+    package "Gateways" {
+        [cache.gateway]
+    }
+
+    package "Patterns" {
+        [circuitBreaker]
+    }
+
+    package "Strategies" {
+        [resultados.strategy]
+    }
+
+    package "Events" {
+        [eventBus]
+        [audit.observer]
+    }
+
+    package "Audit" {
+        [audit.service]
+    }
+
+    package "Graph" {
+        [authorization.graph]
+    }
+
+    package "Config" {
+        [database]
+        [redis]
+        [mongodb]
+        [neo4j]
+    }
+}
+
+
+database "PostgreSQL" as PG
+database "Redis" as REDIS
+database "MongoDB" as MONGO
+database "Neo4j" as NEO
+
+
+' =====================================================
+' DEPENDENCIAS ENTRE CAPAS
+' =====================================================
+
+"Routes" ..> "Middlewares"
+"Routes" ..> "Controllers"
+
+"Controllers" ..> "Services"
+
+"Services" ..> "Repositories"
+"Services" ..> "Gateways"
+"Services" ..> "Strategies"
+"Services" ..> "Events"
+"Services" ..> "Graph"
+
+"Gateways" ..> "Patterns"
+
+"Events" ..> "Audit"
+
+"Repositories" ..> "Config"
+"Gateways" ..> "Config"
+"Audit" ..> "Config"
+"Graph" ..> "Config"
+
+
+' =====================================================
+' INFRAESTRUCTURA
+' =====================================================
+
+"Config" ..> PG : conexión SQL
+"Config" ..> REDIS : conexión Redis
+"Config" ..> MONGO : conexión MongoDB
+"Config" ..> NEO : conexión Neo4j
+
+
+@enduml

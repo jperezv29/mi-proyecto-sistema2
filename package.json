@@ -1,0 +1,40 @@
+{
+  "name": "proyecto",
+  "version": "1.0.0",
+  "description": "El **Sistema de Gestión Electoral** es una aplicación desarrollada bajo una arquitectura **Monolito Modular + API REST**, orientada a la administración de procesos electorales de forma segura, mantenible y escalable.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon --watch src --ext js src/app.js",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jperezv29/mi-proyecto-sistema2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jperezv29/mi-proyecto-sistema2/issues"
+  },
+  "homepage": "https://github.com/jperezv29/mi-proyecto-sistema2#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.7",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.7.0",
+    "neo4j-driver": "^6.2.0",
+    "pg": "^8.23.1",
+    "redis": "^6.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

@@ -84,3 +84,56 @@ Característica: Gestión de identidad y acceso
     Cuando intenta acceder al módulo de administración de usuarios
     Entonces el sistema debe denegar el acceso
     Y debe mostrar un mensaje de permisos insuficientes
+
+# language: es
+
+Característica: Autenticación de usuarios
+  Como usuario registrado del sistema VotaGT
+  Quiero autenticarme mediante mis credenciales
+  Para acceder únicamente a las funciones autorizadas según mis roles y permisos
+
+  Antecedentes:
+    Dado que la API VotaGT está disponible
+    Y existen usuarios registrados en el sistema
+
+  Escenario: Inicio de sesión exitoso
+    Dado que existe un usuario activo con credenciales válidas
+    Cuando el usuario envía una solicitud POST a "/api/v1/auth/login"
+    Y proporciona un identificador y contraseña correctos
+    Entonces el sistema debe responder con estado HTTP 200
+    Y debe devolver un token JWT
+    Y el token debe contener los roles y permisos del usuario
+
+  Escenario: Consultar perfil con token válido
+    Dado que el usuario inició sesión correctamente
+    Y posee un token JWT válido
+    Cuando envía una solicitud GET a "/api/v1/auth/perfil"
+    Entonces el sistema debe responder con estado HTTP 200
+    Y debe devolver la información del usuario autenticado
+
+  Escenario: Intentar consultar el perfil sin token
+    Dado que el usuario no proporciona un token JWT
+    Cuando envía una solicitud GET a "/api/v1/auth/perfil"
+    Entonces el sistema debe responder con estado HTTP 401
+    Y la respuesta debe utilizar el formato "application/problem+json"
+    Y debe indicar que se requiere autenticación
+
+  Esquema del escenario: Validar datos incorrectos durante el inicio de sesión
+    Dado que el usuario desea iniciar sesión
+    Cuando envía el identificador "<identificador>"
+    Y envía la contraseña "<password>"
+    Entonces el sistema debe responder con estado HTTP <estado>
+    Y debe devolver el tipo de problema "<tipo>"
+
+    Ejemplos:
+      | identificador        | password          | estado | tipo                |
+      |                      | Admin123*         | 400    | invalid-request     |
+      | admin                |                   | 400    | invalid-request     |
+      | usuario_inexistente  | ClaveIncorrecta1* | 401    | invalid-credentials |
+
+  Escenario: Bloqueo temporal después de múltiples intentos fallidos
+    Dado que existe un usuario activo
+    Y el usuario ha realizado varios intentos consecutivos con contraseña incorrecta
+    Cuando alcanza el límite permitido de intentos fallidos
+    Entonces el sistema debe responder con estado HTTP 403
+    Y la cuenta debe quedar temporalmente bloqueada

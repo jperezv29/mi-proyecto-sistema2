@@ -1,0 +1,205 @@
+@startuml
+title VotaGT - Diagrama de Clases UML 2.5.1
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+
+' =====================================================
+' AUTENTICACION
+' =====================================================
+
+package "Autenticacion" {
+
+    class Usuario <<Entity>> {
+        +id: Integer
+        +username: String
+        +email: String
+        +passwordHash: String
+        +estado: String
+        +intentosFallidos: Integer
+        +bloqueadoHasta: DateTime
+    }
+
+    class Rol <<Entity>> {
+        +id: Integer
+        +nombre: String
+    }
+
+    class Permiso <<Entity>> {
+        +id: Integer
+        +codigo: String
+        +descripcion: String
+    }
+
+    class Sesion <<Entity>> {
+        +id: Integer
+        +usuarioId: Integer
+        +token: String
+        +fechaExpiracion: DateTime
+    }
+}
+
+' =====================================================
+' DOMINIO ELECTORAL
+' =====================================================
+
+package "Gestion Electoral" {
+
+    class Votacion <<Entity>> {
+        +id: Integer
+        +nombre: String
+        +descripcion: String
+        +fechaInicio: DateTime
+        +fechaFin: DateTime
+        +estado: String
+        +creadoPor: Integer
+    }
+
+    class Candidato <<Entity>> {
+        +id: Integer
+        +votacionId: Integer
+        +nombre: String
+        +partido: String
+        +cargo: String
+        +numeroLista: Integer
+        +estado: String
+    }
+
+    class Mesa <<Entity>> {
+        +id: Integer
+        +votacionId: Integer
+        +codigo: String
+        +nombre: String
+        +ubicacion: String
+        +departamento: String
+        +municipio: String
+        +estado: String
+    }
+
+    class Resultado <<Entity>> {
+        +id: Integer
+        +votacionId: Integer
+        +mesaId: Integer
+        +candidatoId: Integer
+        +votos: Integer
+        +registradoPor: Integer
+    }
+}
+
+' =====================================================
+' SERVICIOS
+' =====================================================
+
+package "Servicios" {
+
+    class AuthService <<Service>> {
+        +login(identificador, password)
+        +obtenerPerfil(usuarioId)
+    }
+
+    class VotacionService <<Service>> {
+        +listarVotaciones()
+        +crearVotacion(datos, usuarioId)
+        +obtenerVotacionPorId(id)
+    }
+
+    class CandidatoService <<Service>> {
+        +listarCandidatos(votacionId)
+        +crearCandidato(votacionId, datos, usuarioId)
+    }
+
+    class MesaService <<Service>> {
+        +listarMesas(votacionId)
+        +crearMesa(votacionId, datos, usuarioId)
+    }
+
+    class ResultadoService <<Service>> {
+        +registrarResultado(votacionId, datos, usuarioId)
+        +obtenerResultados(votacionId)
+        +exportarResultados(votacionId, formato)
+    }
+}
+
+' =====================================================
+' REPOSITORIES
+' =====================================================
+
+package "Persistencia" {
+
+    interface AuthRepository {
+        +buscarUsuario()
+        +obtenerRoles()
+        +obtenerPermisos()
+    }
+
+    interface VotacionRepository {
+        +listarVotaciones()
+        +crearVotacion()
+        +obtenerPorId()
+    }
+
+    interface CandidatoRepository {
+        +listarPorVotacion()
+        +crearCandidato()
+        +buscarNumeroLista()
+    }
+
+    interface MesaRepository {
+        +listarPorVotacion()
+        +crearMesa()
+        +buscarPorCodigo()
+    }
+
+    interface ResultadoRepository {
+        +crearResultado()
+        +buscarResultado()
+        +obtenerConsolidado()
+        +obtenerResumen()
+    }
+}
+
+' =====================================================
+' RELACIONES DE DOMINIO
+' =====================================================
+
+Usuario "1" o-- "0..*" Rol : posee
+Rol "1" o-- "0..*" Permiso : otorga
+
+Usuario "1" *-- "0..*" Sesion : inicia
+
+Usuario "1" --> "0..*" Votacion : crea
+
+Votacion "1" *-- "0..*" Candidato : contiene
+Votacion "1" *-- "0..*" Mesa : contiene
+Votacion "1" *-- "0..*" Resultado : registra
+
+Mesa "1" --> "0..*" Resultado : genera
+Candidato "1" --> "0..*" Resultado : recibe
+
+Usuario "1" --> "0..*" Resultado : registra
+
+' =====================================================
+' DEPENDENCIAS DE DISEÑO
+' =====================================================
+
+AuthService ..> AuthRepository
+
+VotacionService ..> VotacionRepository
+
+CandidatoService ..> CandidatoRepository
+
+MesaService ..> MesaRepository
+
+ResultadoService ..> ResultadoRepository
+
+AuthRepository ..> Usuario
+AuthRepository ..> Rol
+AuthRepository ..> Permiso
+
+VotacionRepository ..> Votacion
+CandidatoRepository ..> Candidato
+MesaRepository ..> Mesa
+ResultadoRepository ..> Resultado
+
+@enduml

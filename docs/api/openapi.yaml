@@ -1,0 +1,1473 @@
+openapi: 3.0.3
+
+info:
+  title: API REST - Sistema de Gestión Electoral VotaGT
+  version: "1.0.0"
+  description: >
+    API REST para la gestión del Sistema Electoral VotaGT.
+    Permite autenticar usuarios mediante JWT, administrar procesos
+    electorales, candidatos y mesas, registrar resultados y consultar
+    resultados consolidados.
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Servidor local de desarrollo
+
+tags:
+  - name: Autenticacion
+    description: Operaciones relacionadas con autenticación y seguridad.
+
+  - name: Votaciones
+    description: Operaciones para administrar procesos electorales.
+
+  - name: Candidatos
+    description: Operaciones para administrar candidatos.
+
+  - name: Mesas
+    description: Operaciones para administrar mesas electorales.
+
+  - name: Resultados
+    description: Operaciones para registrar y consultar resultados.
+
+
+paths:
+
+  # =========================================================
+  # AUTENTICACION
+  # =========================================================
+
+  /auth/login:
+    post:
+      tags:
+        - Autenticacion
+
+      summary: Iniciar sesión
+
+      description: >
+        Valida las credenciales del usuario y genera un token JWT
+        que contiene sus roles y permisos.
+
+      operationId: login
+
+      security: []
+
+      requestBody:
+        required: true
+
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+
+            example:
+              identificador: admin
+              password: Admin123*
+
+      responses:
+
+        '200':
+          description: Inicio de sesión exitoso
+
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+
+  /auth/perfil:
+    get:
+      tags:
+        - Autenticacion
+
+      summary: Consultar perfil autenticado
+
+      description: >
+        Devuelve la información contenida en el token JWT del
+        usuario autenticado, incluyendo su identificador,
+        nombre de usuario, roles y permisos.
+
+      operationId: obtenerPerfil
+
+      security:
+        - bearerAuth: []
+
+      responses:
+
+        '200':
+          description: Perfil del usuario autenticado
+
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerfilResponse'
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+
+  # =========================================================
+  # VOTACIONES
+  # =========================================================
+
+  /votaciones:
+    get:
+      tags:
+        - Votaciones
+
+      summary: Listar votaciones
+
+      description: >
+        Obtiene el listado de procesos electorales registrados
+        en el sistema.
+
+      operationId: listarVotaciones
+
+      security:
+        - bearerAuth: []
+
+      responses:
+
+        '200':
+          description: Lista de votaciones obtenida correctamente
+
+          content:
+            application/json:
+              schema:
+                type: array
+
+                items:
+                  $ref: '#/components/schemas/Votacion'
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+
+    post:
+      tags:
+        - Votaciones
+
+      summary: Crear una votación
+
+      description: >
+        Registra un nuevo proceso electoral. Requiere que el
+        usuario autenticado posea el permiso
+        VOTACIONES_GESTIONAR.
+
+      operationId: crearVotacion
+
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        required: true
+
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VotacionCreateRequest'
+
+            example:
+              nombre: Elecciones Departamentales 2027
+              descripcion: Proceso electoral departamental de prueba
+              fechaInicio: "2027-03-10T07:00:00"
+              fechaFin: "2027-03-10T18:00:00"
+
+      responses:
+
+        '201':
+          description: Votación creada correctamente
+
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VotacionResponse'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+
+  /votaciones/{votacionId}:
+    get:
+      tags:
+        - Votaciones
+
+      summary: Obtener una votación por ID
+
+      description: >
+        Obtiene la información de una votación específica
+        mediante su identificador.
+
+      operationId: obtenerVotacionPorId
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - $ref: '#/components/parameters/VotacionId'
+
+      responses:
+
+        '200':
+          description: Votación encontrada correctamente
+
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Votacion'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+
+  # =========================================================
+  # CANDIDATOS
+  # =========================================================
+
+  /votaciones/{votacionId}/candidatos:
+    get:
+      tags:
+        - Candidatos
+
+      summary: Listar candidatos
+
+      description: >
+        Obtiene todos los candidatos registrados dentro
+        de una votación determinada.
+
+      operationId: listarCandidatos
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - $ref: '#/components/parameters/VotacionId'
+
+      responses:
+
+        '200':
+          description: Lista de candidatos obtenida correctamente
+
+          content:
+            application/json:
+              schema:
+                type: array
+
+                items:
+                  $ref: '#/components/schemas/Candidato'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+
+    post:
+      tags:
+        - Candidatos
+
+      summary: Registrar candidato
+
+      description: >
+        Registra un candidato dentro de una votación.
+        Requiere el permiso CANDIDATOS_GESTIONAR.
+
+      operationId: crearCandidato
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - $ref: '#/components/parameters/VotacionId'
+
+      requestBody:
+        required: true
+
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CandidatoCreateRequest'
+
+            example:
+              nombre: Luis Hernández
+              partido: Movimiento Desarrollo
+              cargo: Presidente
+              numeroLista: 5
+
+      responses:
+
+        '201':
+          description: Candidato registrado correctamente
+
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidatoResponse'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+
+  # =========================================================
+  # MESAS ELECTORALES
+  # =========================================================
+
+  /votaciones/{votacionId}/mesas:
+    get:
+      tags:
+        - Mesas
+
+      summary: Listar mesas electorales
+
+      description: >
+        Obtiene las mesas electorales pertenecientes
+        a una votación determinada.
+
+      operationId: listarMesas
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - $ref: '#/components/parameters/VotacionId'
+
+      responses:
+
+        '200':
+          description: Lista de mesas obtenida correctamente
+
+          content:
+            application/json:
+              schema:
+                type: array
+
+                items:
+                  $ref: '#/components/schemas/Mesa'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+
+    post:
+      tags:
+        - Mesas
+
+      summary: Registrar mesa electoral
+
+      description: >
+        Registra una nueva mesa dentro de una votación.
+        Requiere el permiso MESAS_GESTIONAR.
+
+      operationId: crearMesa
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - $ref: '#/components/parameters/VotacionId'
+
+      requestBody:
+        required: true
+
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MesaCreateRequest'
+
+            example:
+              codigo: MESA-005
+              nombre: Escuela Nacional Zona 1
+              ubicacion: Zona 1
+              departamento: Guatemala
+              municipio: Guatemala
+
+      responses:
+
+        '201':
+          description: Mesa electoral registrada correctamente
+
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MesaResponse'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+
+  # =========================================================
+  # RESULTADOS
+  # =========================================================
+
+  /votaciones/{votacionId}/resultados:
+    get:
+      tags:
+        - Resultados
+
+      summary: Consultar resultados consolidados
+
+      description: >
+        Consulta los resultados consolidados de una votación.
+        La operación utiliza Redis mediante el patrón Cache-Aside.
+        La propiedad cache indica si la información fue obtenida
+        desde Redis mediante HIT o desde PostgreSQL mediante MISS.
+
+      operationId: obtenerResultados
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - $ref: '#/components/parameters/VotacionId'
+
+      responses:
+
+        '200':
+          description: Resultados obtenidos correctamente
+
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultadosConsolidados'
+
+              example:
+                votacionId: 1
+                mesasConResultados: 2
+                totalVotosRegistrados: 534
+                candidatos:
+                  - candidato_id: "1"
+                    nombre: Carlos López
+                    partido: Partido Futuro
+                    cargo: Presidente
+                    numero_lista: 1
+                    total_votos: "255"
+
+                  - candidato_id: "2"
+                    nombre: María González
+                    partido: Movimiento Nacional
+                    cargo: Presidente
+                    numero_lista: 2
+                    total_votos: "213"
+
+                cache: HIT
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+
+    post:
+      tags:
+        - Resultados
+
+      summary: Registrar resultado electoral
+
+      description: >
+        Registra la cantidad de votos obtenidos por un candidato
+        en una mesa electoral. La mesa y el candidato deben pertenecer
+        a la votación indicada. Después de registrar el resultado,
+        se invalida la entrada correspondiente en Redis.
+
+      operationId: registrarResultado
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - $ref: '#/components/parameters/VotacionId'
+
+      requestBody:
+        required: true
+
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResultadoCreateRequest'
+
+            example:
+              mesaId: 2
+              candidatoId: 2
+              votos: 115
+
+      responses:
+
+        '201':
+          description: Resultado registrado correctamente
+
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultadoResponse'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /votaciones/{votacionId}/resultados/exportar:
+    get:
+      tags:
+        - Resultados
+      summary: Exportar resultados de una votación
+      description: >
+        Exporta los resultados consolidados de una votación utilizando
+        Strategy Pattern. Los formatos disponibles son JSON y CSV.
+      operationId: exportarResultados
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - $ref: '#/components/parameters/VotacionId'
+
+        - name: formato
+          in: query
+          required: false
+          description: Formato de exportación de los resultados.
+          schema:
+            type: string
+            enum:
+              - json
+              - csv
+            default: json
+          example: csv
+
+      responses:
+
+        '200':
+          description: Resultados exportados correctamente.
+          headers:
+            Content-Disposition:
+              description: Nombre sugerido para el archivo exportado.
+              schema:
+                type: string
+                example: attachment; filename="resultados-votacion-7.csv"
+
+          content:
+
+            application/json:
+              schema:
+                type: object
+                properties:
+                  votacionId:
+                    type: integer
+                    example: 7
+
+                  mesasConResultados:
+                    type: integer
+                    example: 2
+
+                  totalVotosRegistrados:
+                    type: integer
+                    example: 150
+
+                  candidatos:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+
+            text/csv:
+              schema:
+                type: string
+              example: |
+                Votacion ID,7
+                Mesas con resultados,2
+                Total votos registrados,150
+
+                candidato_id,nombre,partido,total_votos
+                1,Candidato A,Partido A,80
+                2,Candidato B,Partido B,70
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+# =========================================================
+# COMPONENTS
+# =========================================================
+
+components:
+
+  # =========================================================
+  # JWT
+  # =========================================================
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >
+        Token JWT obtenido mediante el endpoint
+        POST /auth/login.
+
+
+  # =========================================================
+  # PARAMETROS
+  # =========================================================
+
+  parameters:
+
+    VotacionId:
+      name: votacionId
+      in: path
+      required: true
+      description: Identificador único de la votación.
+
+      schema:
+        type: integer
+        minimum: 1
+
+      example: 1
+
+
+  # =========================================================
+  # SCHEMAS
+  # =========================================================
+
+  schemas:
+
+    # ---------------------------------------------------------
+    # LOGIN
+    # ---------------------------------------------------------
+
+    LoginRequest:
+      type: object
+
+      required:
+        - identificador
+        - password
+
+      properties:
+
+        identificador:
+          type: string
+          description: >
+            Nombre de usuario o correo electrónico utilizado
+            para iniciar sesión.
+          example: admin
+
+        password:
+          type: string
+          format: password
+          example: Admin123*
+
+
+    LoginResponse:
+      type: object
+
+      properties:
+
+        mensaje:
+          type: string
+          example: Inicio de sesión exitoso.
+
+        token:
+          type: string
+          description: Token JWT utilizado para acceder a rutas protegidas.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+        usuario:
+          $ref: '#/components/schemas/UsuarioAutenticado'
+
+
+    UsuarioAutenticado:
+      type: object
+
+      properties:
+
+        id:
+          oneOf:
+            - type: integer
+            - type: string
+          example: 1
+
+        username:
+          type: string
+          example: admin
+
+        roles:
+          type: array
+
+          items:
+            type: string
+
+          example:
+            - ADMINISTRADOR
+
+        permisos:
+          type: array
+
+          items:
+            type: string
+
+          example:
+            - USUARIOS_GESTIONAR
+            - VOTACIONES_GESTIONAR
+            - CANDIDATOS_GESTIONAR
+            - MESAS_GESTIONAR
+            - RESULTADOS_REGISTRAR
+            - RESULTADOS_CONSULTAR
+            - REPORTES_GENERAR
+            - AUDITORIA_CONSULTAR
+
+
+    PerfilResponse:
+      type: object
+
+      properties:
+
+        usuario:
+          $ref: '#/components/schemas/UsuarioAutenticado'
+
+
+    # ---------------------------------------------------------
+    # VOTACIONES
+    # ---------------------------------------------------------
+
+    VotacionCreateRequest:
+      type: object
+
+      required:
+        - nombre
+        - fechaInicio
+        - fechaFin
+
+      properties:
+
+        nombre:
+          type: string
+          example: Elecciones Generales 2027
+
+        descripcion:
+          type: string
+          nullable: true
+          example: Proceso electoral general de prueba.
+
+        fechaInicio:
+          type: string
+          format: date-time
+          example: "2027-03-10T07:00:00"
+
+        fechaFin:
+          type: string
+          format: date-time
+          example: "2027-03-10T18:00:00"
+
+
+    Votacion:
+      type: object
+
+      properties:
+
+        id:
+          oneOf:
+            - type: integer
+            - type: string
+          example: "1"
+
+        nombre:
+          type: string
+          example: Elecciones Generales 2026
+
+        descripcion:
+          type: string
+          nullable: true
+          example: Proceso electoral general de prueba.
+
+        fecha_inicio:
+          type: string
+          format: date-time
+          example: "2026-11-01T07:00:00.000Z"
+
+        fecha_fin:
+          type: string
+          format: date-time
+          example: "2026-11-01T18:00:00.000Z"
+
+        estado:
+          type: string
+
+          enum:
+            - PROGRAMADA
+            - ABIERTA
+            - CERRADA
+            - CANCELADA
+
+          example: PROGRAMADA
+
+        creado_por:
+          oneOf:
+            - type: integer
+            - type: string
+          example: "1"
+
+        creado_en:
+          type: string
+          format: date-time
+
+        actualizado_en:
+          type: string
+          format: date-time
+
+
+    VotacionResponse:
+      type: object
+
+      properties:
+
+        mensaje:
+          type: string
+          example: Votación creada correctamente.
+
+        datos:
+          $ref: '#/components/schemas/Votacion'
+
+
+    # ---------------------------------------------------------
+    # CANDIDATOS
+    # ---------------------------------------------------------
+
+    CandidatoCreateRequest:
+      type: object
+
+      required:
+        - nombre
+        - cargo
+
+      properties:
+
+        nombre:
+          type: string
+          example: Luis Hernández
+
+        partido:
+          type: string
+          nullable: true
+          example: Movimiento Desarrollo
+
+        cargo:
+          type: string
+          example: Presidente
+
+        numeroLista:
+          type: integer
+          minimum: 1
+          example: 5
+
+
+    Candidato:
+      type: object
+
+      properties:
+
+        id:
+          oneOf:
+            - type: integer
+            - type: string
+          example: "7"
+
+        votacion_id:
+          oneOf:
+            - type: integer
+            - type: string
+          example: "1"
+
+        nombre:
+          type: string
+          example: Luis Hernández
+
+        partido:
+          type: string
+          nullable: true
+          example: Movimiento Desarrollo
+
+        cargo:
+          type: string
+          example: Presidente
+
+        numero_lista:
+          type: integer
+          nullable: true
+          example: 5
+
+        estado:
+          type: string
+
+          enum:
+            - ACTIVO
+            - INACTIVO
+            - RETIRADO
+
+          example: ACTIVO
+
+        creado_en:
+          type: string
+          format: date-time
+
+        actualizado_en:
+          type: string
+          format: date-time
+
+
+    CandidatoResponse:
+      type: object
+
+      properties:
+
+        mensaje:
+          type: string
+          example: Candidato registrado correctamente.
+
+        datos:
+          $ref: '#/components/schemas/Candidato'
+
+
+    # ---------------------------------------------------------
+    # MESAS
+    # ---------------------------------------------------------
+
+    MesaCreateRequest:
+      type: object
+
+      required:
+        - codigo
+        - nombre
+
+      properties:
+
+        codigo:
+          type: string
+          example: MESA-005
+
+        nombre:
+          type: string
+          example: Escuela Nacional Zona 1
+
+        ubicacion:
+          type: string
+          nullable: true
+          example: Zona 1
+
+        departamento:
+          type: string
+          nullable: true
+          example: Guatemala
+
+        municipio:
+          type: string
+          nullable: true
+          example: Guatemala
+
+
+    Mesa:
+      type: object
+
+      properties:
+
+        id:
+          oneOf:
+            - type: integer
+            - type: string
+          example: "5"
+
+        votacion_id:
+          oneOf:
+            - type: integer
+            - type: string
+          example: "1"
+
+        codigo:
+          type: string
+          example: MESA-005
+
+        nombre:
+          type: string
+          example: Escuela Nacional Zona 1
+
+        ubicacion:
+          type: string
+          nullable: true
+          example: Zona 1
+
+        departamento:
+          type: string
+          nullable: true
+          example: Guatemala
+
+        municipio:
+          type: string
+          nullable: true
+          example: Guatemala
+
+        estado:
+          type: string
+
+          enum:
+            - ACTIVA
+            - INACTIVA
+            - CERRADA
+
+          example: ACTIVA
+
+        creado_en:
+          type: string
+          format: date-time
+
+        actualizado_en:
+          type: string
+          format: date-time
+
+
+    MesaResponse:
+      type: object
+
+      properties:
+
+        mensaje:
+          type: string
+          example: Mesa registrada correctamente.
+
+        datos:
+          $ref: '#/components/schemas/Mesa'
+
+
+    # ---------------------------------------------------------
+    # RESULTADOS
+    # ---------------------------------------------------------
+
+    ResultadoCreateRequest:
+      type: object
+
+      required:
+        - mesaId
+        - candidatoId
+        - votos
+
+      properties:
+
+        mesaId:
+          type: integer
+          minimum: 1
+          example: 2
+
+        candidatoId:
+          type: integer
+          minimum: 1
+          example: 2
+
+        votos:
+          type: integer
+          minimum: 0
+          example: 115
+
+
+    Resultado:
+      type: object
+
+      properties:
+
+        id:
+          oneOf:
+            - type: integer
+            - type: string
+          example: "10"
+
+        votacion_id:
+          oneOf:
+            - type: integer
+            - type: string
+          example: "1"
+
+        mesa_id:
+          oneOf:
+            - type: integer
+            - type: string
+          example: "2"
+
+        candidato_id:
+          oneOf:
+            - type: integer
+            - type: string
+          example: "2"
+
+        votos:
+          type: integer
+          minimum: 0
+          example: 115
+
+        registrado_por:
+          oneOf:
+            - type: integer
+            - type: string
+          example: "1"
+
+        creado_en:
+          type: string
+          format: date-time
+
+        actualizado_en:
+          type: string
+          format: date-time
+
+
+    ResultadoResponse:
+      type: object
+
+      properties:
+
+        mensaje:
+          type: string
+          example: Resultado registrado correctamente.
+
+        datos:
+          $ref: '#/components/schemas/Resultado'
+
+
+    ResultadoCandidato:
+      type: object
+
+      properties:
+
+        candidato_id:
+          oneOf:
+            - type: integer
+            - type: string
+          example: "1"
+
+        nombre:
+          type: string
+          example: Carlos López
+
+        partido:
+          type: string
+          nullable: true
+          example: Partido Futuro
+
+        cargo:
+          type: string
+          example: Presidente
+
+        numero_lista:
+          type: integer
+          nullable: true
+          example: 1
+
+        total_votos:
+          oneOf:
+            - type: integer
+            - type: string
+          example: "255"
+
+
+    ResultadosConsolidados:
+      type: object
+
+      properties:
+
+        votacionId:
+          type: integer
+          example: 1
+
+        mesasConResultados:
+          oneOf:
+            - type: integer
+            - type: string
+          example: 2
+
+        totalVotosRegistrados:
+          oneOf:
+            - type: integer
+            - type: string
+          example: 534
+
+        candidatos:
+          type: array
+
+          items:
+            $ref: '#/components/schemas/ResultadoCandidato'
+
+        cache:
+          type: string
+
+          enum:
+            - HIT
+            - MISS
+
+          description: >
+            HIT indica que los datos fueron obtenidos desde Redis.
+            MISS indica que fue necesario consultar PostgreSQL
+            y almacenar posteriormente el resultado en Redis.
+
+          example: HIT
+
+
+    # ---------------------------------------------------------
+    # RFC 9457 - PROBLEM DETAILS
+    # ---------------------------------------------------------
+
+    ProblemDetails:
+      type: object
+
+      description: >
+        Formato de error basado en RFC 9457 Problem Details
+        for HTTP APIs.
+
+      required:
+        - type
+        - title
+        - status
+        - detail
+
+      properties:
+
+        type:
+          type: string
+          format: uri
+          description: URI que identifica el tipo de problema.
+          example: https://votagt.local/problems/invalid-request
+
+        title:
+          type: string
+          description: Título breve del problema.
+          example: Solicitud incorrecta
+
+        status:
+          type: integer
+          description: Código HTTP asociado al error.
+          example: 400
+
+        detail:
+          type: string
+          description: Explicación específica del error.
+          example: Los datos enviados no son válidos.
+
+        instance:
+          type: string
+          description: Ruta donde ocurrió el problema.
+          example: /api/v1/votaciones/1/resultados
+
+
+  # =========================================================
+  # RESPUESTAS DE ERROR REUTILIZABLES
+  # =========================================================
+
+  responses:
+
+    BadRequest:
+      description: Solicitud incorrecta
+
+      content:
+        application/problem+json:
+
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+          example:
+            type: https://votagt.local/problems/invalid-request
+            title: Solicitud incorrecta
+            status: 400
+            detail: Los datos enviados no son válidos.
+            instance: /api/v1/votaciones
+
+
+    Unauthorized:
+      description: Usuario no autenticado o token JWT inválido
+
+      content:
+        application/problem+json:
+
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+          example:
+            type: https://votagt.local/problems/missing-token
+            title: No autorizado
+            status: 401
+            detail: Se requiere un token de autenticación.
+            instance: /api/v1/votaciones
+
+
+    Forbidden:
+      description: El usuario no posee permisos suficientes
+
+      content:
+        application/problem+json:
+
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+          example:
+            type: https://votagt.local/problems/forbidden
+            title: Acceso denegado
+            status: 403
+            detail: No posee permisos para realizar esta operación.
+            instance: /api/v1/votaciones
+
+
+    NotFound:
+      description: Recurso no encontrado
+
+      content:
+        application/problem+json:
+
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+          example:
+            type: https://votagt.local/problems/not-found
+            title: Recurso no encontrado
+            status: 404
+            detail: El recurso solicitado no existe.
+            instance: /api/v1/votaciones/99999
+
+
+    Conflict:
+      description: Conflicto con el estado actual de los datos
+
+      content:
+        application/problem+json:
+
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+          example:
+            type: https://votagt.local/problems/conflict
+            title: Conflicto
+            status: 409
+            detail: El registro ya existe.
+            instance: /api/v1/votaciones/1/candidatos
+
+
+    InternalError:
+      description: Error interno del servidor
+
+      content:
+        application/problem+json:
+
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+          example:
+            type: https://votagt.local/problems/internal-server-error
+            title: Error interno del servidor
+            status: 500
+            detail: Ocurrió un error interno en el servidor.
+            instance: /api/v1/votaciones
