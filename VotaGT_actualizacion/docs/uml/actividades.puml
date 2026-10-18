@@ -1,0 +1,167 @@
+@startuml
+title VotaGT - Diagrama de Actividades con Swimlanes\nRegistro de Resultado Electoral
+
+|Usuario|
+
+start
+
+:Ingresar datos del resultado;
+
+:Enviar solicitud POST\n/api/v1/votaciones/{id}/resultados;
+
+|API / Middleware|
+
+:Validar token JWT;
+
+if (¿Token válido?) then (Sí)
+
+    :Verificar permiso\nRESULTADOS_REGISTRAR;
+
+    if (¿Tiene permiso?) then (Sí)
+
+        |Resultado Service|
+
+        :Validar votacionId;
+        :Validar mesaId;
+        :Validar candidatoId;
+        :Validar cantidad de votos;
+
+        if (¿Datos válidos?) then (Sí)
+
+            |PostgreSQL|
+
+            :Verificar existencia de votación;
+
+            if (¿Votación existe?) then (Sí)
+
+                :Verificar mesa;
+
+                if (¿Mesa pertenece a votación?) then (Sí)
+
+                    :Verificar candidato;
+
+                    if (¿Candidato pertenece a votación?) then (Sí)
+
+                        :Buscar resultado existente;
+
+                        if (¿Resultado duplicado?) then (No)
+
+                            :Insertar resultado;
+
+                            |Redis / Cache|
+
+                            :Invalidar clave de caché;
+
+                            if (¿Redis disponible?) then (Sí)
+
+                                :Eliminar caché;
+
+                            else (No)
+
+                                :Continuar sin caché;
+
+                            endif
+
+                            |Auditoría|
+
+                            :Emitir evento\nRESULTADO_REGISTRADO;
+
+                            :Audit Observer recibe evento;
+
+                            :Registrar evento en MongoDB;
+
+                            |API / Controller|
+
+                            :Construir respuesta HTTP 201;
+
+                            |Usuario|
+
+                            :Recibir resultado registrado;
+
+                        else (Sí)
+
+                            |API / Controller|
+
+                            :Generar HTTP 409\nResultado duplicado;
+
+                            |Usuario|
+
+                            :Recibir error;
+
+                        endif
+
+                    else (No)
+
+                        |API / Controller|
+
+                        :Generar HTTP 404\nCandidato no encontrado;
+
+                        |Usuario|
+
+                        :Recibir error;
+
+                    endif
+
+                else (No)
+
+                    |API / Controller|
+
+                    :Generar HTTP 404\nMesa no encontrada;
+
+                    |Usuario|
+
+                    :Recibir error;
+
+                endif
+
+            else (No)
+
+                |API / Controller|
+
+                :Generar HTTP 404\nVotación no encontrada;
+
+                |Usuario|
+
+                :Recibir error;
+
+            endif
+
+        else (No)
+
+            |API / Controller|
+
+            :Generar HTTP 400\nDatos inválidos;
+
+            |Usuario|
+
+            :Recibir error;
+
+        endif
+
+    else (No)
+
+        |API / Middleware|
+
+        :Generar HTTP 403\nPermiso insuficiente;
+
+        |Usuario|
+
+        :Recibir error;
+
+    endif
+
+else (No)
+
+    |API / Middleware|
+
+    :Generar HTTP 401\nNo autenticado;
+
+    |Usuario|
+
+    :Recibir error;
+
+endif
+
+stop
+
+@enduml

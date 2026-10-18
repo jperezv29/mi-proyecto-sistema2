@@ -1,0 +1,2039 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VotaGT | Sistema de Gestión Electoral</title>
+<style>
+:root{--b950:#082747;--b900:#0a315a;--b700:#0f5b9a;--b500:#2495de;--b100:#e9f5fd;--bg:#f6f9fc;--ink:#142033;--muted:#718096;--line:#dce7f1;--ok:#16875d;--warn:#a76b09;--bad:#c23c43;--r:16px;--sh:0 12px 30px rgba(8,39,71,.08)}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg)}button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}.ey{font-size:.7rem;font-weight:800;letter-spacing:.12em;color:var(--b500)}.btn{border:0;border-radius:10px;min-height:42px;padding:0 15px;font-weight:750}.btn.p{background:linear-gradient(135deg,var(--b700),var(--b500));color:#fff}.btn.s{background:var(--b100);color:var(--b900)}.btn.t{background:transparent;color:var(--b700)}.btn.d{background:#fff0f1;color:var(--bad)}.btn:disabled{opacity:.6;cursor:not-allowed}.user-name{display:grid;gap:2px}.user-name small{color:var(--muted)}.field{display:grid;gap:7px}.field span{font-size:.8rem;font-weight:700;color:#42536a}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff;outline:0}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--b500);box-shadow:0 0 0 4px rgba(36,149,222,.1)}
+.login{min-height:100vh;display:grid;grid-template-columns:1.1fr .9fr}.login-hero{padding:52px 7vw;color:#fff;background:radial-gradient(circle at 85% 10%,rgba(36,149,222,.35),transparent 30%),linear-gradient(145deg,var(--b950),var(--b700));display:flex;flex-direction:column;justify-content:space-between}.brand{display:flex;align-items:center;gap:12px}.mark{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:#fff;color:var(--b900);font-weight:900;font-size:1.4rem}.brand strong{font-size:1.3rem}.brand small{display:block;color:#c6ddec}.hero-copy h1{font-size:clamp(2.5rem,5vw,4.8rem);line-height:.98;margin:0 0 18px;letter-spacing:-.05em}.hero-copy p{max-width:570px;color:#c6ddec;line-height:1.7}.hero-features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.hero-features div{border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.06);border-radius:13px;padding:15px;font-size:.78rem}.hero-features b{display:block;margin-bottom:5px}.login-form{display:grid;place-items:center;padding:30px}.login-card{width:min(100%,420px)}.login-card h2{font-size:2rem;margin:6px 0}.login-card>p{color:var(--muted);margin:0 0 25px}.stack{display:grid;gap:16px}.error{padding:11px;border:1px solid #f3c6c9;background:#fff0f1;color:var(--bad);border-radius:10px;font-size:.82rem}
+.app{min-height:100vh}.side{position:fixed;inset:0 auto 0 0;width:250px;background:linear-gradient(180deg,var(--b950),var(--b900));color:#dceaf5;padding:18px 13px;z-index:30;display:flex;flex-direction:column}.side .brand{padding:5px 7px 24px}.side .mark{width:37px;height:37px;font-size:1.05rem}.nav{display:grid;gap:4px}.nav button{border:0;background:transparent;color:#bed2e2;border-radius:10px;padding:11px 12px;text-align:left;font-weight:650}.nav button:hover,.nav button.active{background:rgba(36,149,222,.18);color:#fff}.nav small{display:block;padding:18px 12px 7px;color:#7397b2;font-weight:800;letter-spacing:.12em}.side-foot{margin-top:auto;border-top:1px solid rgba(255,255,255,.1);padding:15px 8px;font-size:.76rem;color:#aac4d7}.dot{width:9px;height:9px;display:inline-block;border-radius:50%;background:#aab4c0;margin-right:7px}.dot.on{background:#29cb8a}.dot.warn{background:#f4b94f}.dot.off{background:#ee6670}.work{margin-left:250px}.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.95);border-bottom:1px solid var(--line);padding:13px 28px;display:flex;justify-content:space-between;align-items:center}.top h1{font-size:1.15rem;margin:0}.top p{font-size:.76rem;color:var(--muted);margin:3px 0 0}.user{display:flex;align-items:center;gap:9px}.avatar{width:37px;height:37px;border-radius:10px;background:var(--b100);color:var(--b900);display:grid;place-items:center;font-weight:900}.user small{display:block;color:var(--muted)}.content{padding:28px}.view{display:none}.view.active{display:block}.banner{padding:30px;border-radius:var(--r);color:#fff;background:radial-gradient(circle at 85% 0,rgba(64,190,247,.35),transparent 30%),linear-gradient(120deg,var(--b900),var(--b700));display:flex;justify-content:space-between;align-items:center;gap:20px}.banner h2{font-size:2rem;margin:5px 0}.banner p{color:#d5e8f5}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:18px 0}.card,.panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh)}.card{padding:18px}.card small{color:var(--muted)}.num{display:block;font-size:1.9rem;margin:10px 0 2px}.grid2{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}.panel{padding:20px}.ph{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}.ph h3{margin:3px 0 0}.list{display:grid;gap:8px}.item{border:1px solid #e8eff5;border-radius:11px;padding:12px;display:flex;justify-content:space-between;gap:10px;align-items:center}.item small{display:block;color:var(--muted);margin-top:3px}.quick{display:grid;gap:9px}.quick button{border:1px solid #e6eef5;border-radius:11px;background:#fbfdff;padding:12px;text-align:left}.toolbar{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:18px}.toolbar h2{font-size:1.6rem;margin:4px 0}.toolbar p{margin:0;color:var(--muted)}.filters{display:flex;gap:10px;margin-bottom:15px}.filters input,.filters select{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse}th{font-size:.68rem;color:#758398;text-transform:uppercase;letter-spacing:.07em;text-align:left;padding:10px;border-bottom:1px solid var(--line)}td{font-size:.82rem;padding:12px 10px;border-bottom:1px solid #edf2f6}.pill{display:inline-block;padding:6px 9px;border-radius:999px;background:#eef3f7;color:#66768b;font-size:.67rem;font-weight:800}.pill.ok{background:#e9f8f2;color:var(--ok)}.pill.info{background:var(--b100);color:var(--b700)}.pill.bad{background:#fff0f1;color:var(--bad)}.selectline{display:grid;gap:7px;max-width:420px;margin-bottom:18px}.selectline select{border:1px solid var(--line);border-radius:10px;padding:11px}.cand{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.cand article{border:1px solid #e5edf4;border-radius:13px;padding:16px}.cand h4{margin:0}.cand p{margin:5px 0;color:var(--muted);font-size:.76rem}.result-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:18px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.span2{grid-column:span 2}.bars{display:grid;gap:13px;min-height:260px;align-content:center}.bar{display:grid;grid-template-columns:130px 1fr 78px;gap:9px;align-items:center;font-size:.76rem}.track{height:13px;background:#edf3f7;border-radius:999px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,var(--b700),var(--b500))}.reports{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.report{padding:22px}.report h3{margin:10px 0}.report p{color:var(--muted);font-size:.8rem;line-height:1.55}.pending{text-align:center;padding:45px 25px}.pending p{max-width:650px;margin:10px auto 18px;color:var(--muted);line-height:1.6}.modal{position:fixed;inset:0;background:rgba(4,22,40,.55);display:none;place-items:center;padding:18px;z-index:100}.modal.open{display:grid}.modalbox{width:min(100%,640px);max-height:94vh;overflow:auto;background:#fff;border-radius:17px;padding:22px}.mh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}.mh h3{margin:4px 0}.close{border:0;background:transparent;font-size:1.6rem}.actions{display:flex;justify-content:flex-end;gap:10px;border-top:1px solid #edf2f6;padding-top:15px}.toast{position:fixed;right:20px;bottom:20px;z-index:200;background:var(--b950);color:#fff;padding:12px 14px;border-radius:10px;opacity:0;transform:translateY(15px);transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:none}.toast.bad{background:#9f3036}.toast.ok{background:#126c4c}.hamb{display:none}
+@media(max-width:1000px){.stats{grid-template-columns:repeat(2,1fr)}.cand{grid-template-columns:repeat(2,1fr)}.reports{grid-template-columns:1fr 1fr}.hero-features{grid-template-columns:1fr}}@media(max-width:850px){.login{grid-template-columns:1fr}.login-hero{display:none}.side{transform:translateX(-105%);transition:.2s}.side.open{transform:none}.work{margin-left:0}.hamb{display:block}.grid2,.result-grid{grid-template-columns:1fr}.top{padding:12px 16px}}@media(max-width:650px){.content{padding:16px}.stats,.cand,.reports{grid-template-columns:1fr}.toolbar,.banner{align-items:flex-start;flex-direction:column}.filters{flex-direction:column}.formgrid{grid-template-columns:1fr}.span2{grid-column:span 1}.bar{grid-template-columns:85px 1fr 65px}.top p,.user div:nth-child(2){display:none}}
+</style>
+</head>
+<body>
+<div id="toast" class="toast"></div>
+<main id="login" class="login">
+ <section class="login-hero"><div class="brand"><div class="mark">V</div><div><strong>VotaGT</strong><small>Sistema de Gestión Electoral</small></div></div><div class="hero-copy"><span class="ey" style="color:#c9e9ff">GESTIÓN ELECTORAL SEGURA</span><h1>Administración clara, rápida y centralizada.</h1><p>Gestiona votaciones, candidatos, mesas, resultados y reportes desde una misma interfaz.</p></div><div class="hero-features"><div><b>Control de acceso</b>JWT y permisos por rol.</div><div><b>Resultados</b>Consolidado con caché Redis.</div><div><b>Reportes</b>Exportación CSV y JSON.</div></div></section>
+ <section class="login-form"><div class="login-card"><span class="ey">BIENVENIDO</span><h2>Iniciar sesión</h2><p>Ingresa tus credenciales para acceder al sistema.</p><form id="loginForm" class="stack"><label class="field"><span>Usuario</span><input id="loginUser" placeholder="admin" required></label><label class="field"><span>Contraseña</span><input id="loginPass" type="password" placeholder="••••••••" required></label><div id="loginError" class="error hidden"></div><button class="btn p" type="submit">Ingresar</button></form></div></section>
+</main>
+<div id="app" class="app hidden">
+ <aside id="side" class="side"><div class="brand"><div class="mark">V</div><div><strong>VotaGT</strong><small>Gestión Electoral</small></div></div><nav class="nav"><button class="active" data-view="dashboard">⌂ Dashboard</button><button data-view="votaciones">▤ Votaciones</button><button data-view="mesas">▦ Mesas</button><button data-view="candidatos">◎ Candidatos</button><button data-view="resultados">▥ Resultados</button><button data-view="reportes">⇩ Reportes</button><small>ADMINISTRACIÓN</small><button data-view="usuarios">♙ Usuarios y roles</button><button data-view="auditoria">◫ Auditoría</button></nav><div class="side-foot"><span id="sideDot" class="dot"></span><span id="sideStatus">Verificando API...</span></div></aside>
+ <div class="work"><header class="top"><div style="display:flex;align-items:center;gap:10px"><button id="hamb" class="btn s hamb">☰</button><div><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Resumen general del sistema electoral.</p></div></div><div class="user"><div id="avatar" class="avatar">U</div><div><b id="who">Usuario</b><small id="role">Rol</small></div><button id="logout" class="btn s">Salir</button></div></header>
+ <main class="content">
+  <section id="view-dashboard" class="view active"><div class="banner"><div><span class="ey" style="color:#c9e9ff">PANEL GENERAL</span><h2>Bienvenido a VotaGT</h2><p>Consulta el estado de la operación electoral desde un solo lugar.</p></div><button class="btn s" data-go="votaciones">Gestionar votaciones</button></div><div class="stats"><article class="card"><small>Votaciones</small><b id="sv" class="num">—</b><small>Procesos registrados</small></article><article class="card"><small>Votaciones abiertas</small><b id="sa" class="num">—</b><small>Procesos en curso</small></article><article class="card"><small>Candidatos</small><b id="sc" class="num">—</b><small>Votación seleccionada</small></article><article class="card"><small>Mesas</small><b id="sm" class="num">—</b><small>Votación seleccionada</small></article></div><div class="grid2"><article class="panel"><div class="ph"><div><span class="ey">OPERACIÓN</span><h3>Votaciones recientes</h3></div></div><div id="recent" class="list">Cargando...</div></article><article class="panel"><div class="ph"><div><span class="ey">ACCESOS RÁPIDOS</span><h3>Acciones frecuentes</h3></div></div><div class="quick"><button data-go="votaciones"><b>+ Nueva votación</b><br><small>Crear proceso electoral</small></button><button data-go="resultados"><b>▥ Registrar resultados</b><br><small>Capturar votos por mesa</small></button><button data-go="reportes"><b>⇩ Exportar reporte</b><br><small>CSV o JSON</small></button></div></article></div></section>
+  <section id="view-votaciones" class="view"><div class="toolbar"><div><span class="ey">GESTIÓN ELECTORAL</span><h2>Votaciones</h2><p>Administra los procesos electorales registrados.</p></div><button class="btn p" onclick="openModal('mV')">+ Nueva votación</button></div><article class="panel"><div class="filters"><input id="vSearch" placeholder="Buscar votación..."><select id="vFilter"><option value="">Todos los estados</option><option>PROGRAMADA</option><option>ABIERTA</option><option>CERRADA</option><option>CANCELADA</option></select></div><div class="tablewrap"><table><thead><tr><th>Votación</th><th>Inicio</th><th>Fin</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="vRows"></tbody></table></div></article></section>
+  <section id="view-mesas" class="view"><div class="toolbar"><div><span class="ey">OPERACIÓN ELECTORAL</span><h2>Mesas</h2><p>Registra y consulta mesas por votación.</p></div><button class="btn p" onclick="openModal('mM')">+ Nueva mesa</button></div><article class="panel"><label class="selectline"><span>Votación seleccionada</span><select id="mesaV"></select></label><div class="tablewrap"><table><thead><tr><th>Código</th><th>Nombre</th><th>Ubicación</th><th>Municipio</th><th>Estado</th></tr></thead><tbody id="mRows"></tbody></table></div></article></section>
+  <section id="view-candidatos" class="view"><div class="toolbar"><div><span class="ey">OPERACIÓN ELECTORAL</span><h2>Candidatos</h2><p>Registra y consulta candidatos.</p></div><button class="btn p" onclick="openModal('mC')">+ Nuevo candidato</button></div><article class="panel"><label class="selectline"><span>Votación seleccionada</span><select id="candV"></select></label><div id="candGrid" class="cand"></div></article></section>
+  <section id="view-resultados" class="view"><div class="toolbar"><div><span class="ey">RESULTADOS ELECTORALES</span><h2>Resultados</h2><p>Registra, corrige y consulta los resultados por mesa y candidato.</p></div><button id="refreshR" class="btn s">Actualizar</button></div><div class="result-grid"><article class="panel"><div class="ph"><div><span class="ey">REGISTRO / CORRECCIÓN</span><h3>Resultado por mesa</h3></div></div><form id="rForm" class="formgrid"><label class="field span2"><span>Votación</span><select id="rV"></select></label><label class="field"><span>Mesa</span><select id="rM"></select></label><label class="field"><span>Candidato</span><select id="rC"></select></label><div id="rCurrent" class="span2" style="padding:10px 12px;border-radius:10px;background:#f6f9fc;color:var(--muted);font-size:.8rem">Selecciona una mesa y un candidato.</div><label class="field span2"><span>Cantidad de votos</span><input id="rVotes" type="number" min="0" step="1" required></label><button id="rSubmit" class="btn p span2">Registrar resultado</button></form></article><article class="panel"><div class="ph"><div><span class="ey">CONSOLIDADO</span><h3 id="rTitle">Resultados actuales</h3><small id="rMeta">0 mesas con resultados · caché —</small></div><span id="rTotal" class="pill">0 votos</span></div><div id="bars" class="bars">Selecciona una votación.</div></article></div></section>
+  <section id="view-reportes" class="view"><div class="toolbar"><div><span class="ey">EXPORTACIÓN</span><h2>Reportes</h2><p>Descarga resultados consolidados.</p></div></div><div class="reports"><article class="panel report"><span class="pill info">CSV</span><h3>Reporte CSV</h3><p>Formato tabular para Excel.</p><label class="field"><span>Votación</span><select id="csvV"></select></label><br><button id="csvBtn" class="btn p">Descargar CSV</button></article><article class="panel report"><span class="pill info">JSON</span><h3>Reporte JSON</h3><p>Formato estructurado para integraciones.</p><label class="field"><span>Votación</span><select id="jsonV"></select></label><br><button id="jsonBtn" class="btn s">Descargar JSON</button></article><article class="panel report"><span class="ey">API</span><h3>Endpoint protegido</h3><p>GET /api/v1/votaciones/{id}/resultados/exportar</p></article></div></section>
+  <section id="view-usuarios" class="view"><div class="toolbar"><div><span class="ey">ADMINISTRACIÓN</span><h2>Usuarios y roles</h2><p>Administra cuentas, roles y estado de acceso al sistema.</p></div><button class="btn p" onclick="openModal('mU')">+ Nuevo usuario</button></div><article class="panel"><div class="filters"><input id="uSearch" placeholder="Buscar usuario, nombre o correo..."><select id="uRoleFilter"><option value="">Todos los roles</option></select><select id="uStateFilter"><option value="">Todos los estados</option><option>ACTIVO</option><option>BLOQUEADO</option><option>INACTIVO</option></select></div><div class="tablewrap"><table><thead><tr><th>Usuario</th><th>Nombre</th><th>Rol</th><th>Estado</th><th>Último acceso</th><th>Acción</th></tr></thead><tbody id="uRows"></tbody></table></div></article></section>
+  <section id="view-auditoria" class="view"><div class="toolbar"><div><span class="ey">TRAZABILIDAD</span><h2>Auditoría</h2><p>Estado del subsistema de auditoría.</p></div></div><div class="grid2"><article class="panel pending"><h3>Auditoría activa en MongoDB</h3><p>Los eventos del sistema se publican mediante Observer y se almacenan en MongoDB.</p><span class="pill ok">Backend implementado</span></article><article class="panel pending"><h3>Consulta web pendiente</h3><p>No existe endpoint REST de lectura de auditoría, por eso esta pantalla no inventa registros.</p><span class="pill">Solo estado</span></article></div></section>
+ </main></div>
+</div>
+<div id="mV" class="modal"><div class="modalbox"><div class="mh"><div><span class="ey">NUEVO PROCESO</span><h3>Crear votación</h3></div><button class="close" onclick="closeModal('mV')">×</button></div><form id="vForm" class="formgrid"><label class="field span2"><span>Nombre</span><input id="vName" required></label><label class="field span2"><span>Descripción</span><textarea id="vDesc"></textarea></label><label class="field"><span>Inicio</span><input id="vStart" type="datetime-local" required></label><label class="field"><span>Fin</span><input id="vEnd" type="datetime-local" required></label><div class="actions span2"><button type="button" class="btn s" onclick="closeModal('mV')">Cancelar</button><button class="btn p">Crear</button></div></form></div></div>
+<div id="mM" class="modal"><div class="modalbox"><div class="mh"><div><span class="ey">NUEVA MESA</span><h3>Registrar mesa</h3></div><button class="close" onclick="closeModal('mM')">×</button></div><form id="mForm" class="formgrid"><label class="field"><span>Código</span><input id="mCode" required placeholder="MESA-001"></label><label class="field"><span>Nombre</span><input id="mName" required placeholder="Mesa Central"></label><label class="field span2"><span>Ubicación</span><input id="mLoc" placeholder="Centro educativo / edificio"></label><label class="field"><span>Departamento</span><input id="mDept" placeholder="Guatemala"></label><label class="field"><span>Municipio</span><input id="mMun" placeholder="Guatemala"></label><div class="actions span2"><button type="button" class="btn s" onclick="closeModal('mM')">Cancelar</button><button class="btn p">Registrar</button></div></form></div></div>
+<div id="mC" class="modal"><div class="modalbox"><div class="mh"><div><span class="ey">NUEVO CANDIDATO</span><h3>Registrar candidato</h3></div><button class="close" onclick="closeModal('mC')">×</button></div><form id="cForm" class="formgrid"><label class="field span2"><span>Nombre</span><input id="cName" required placeholder="Nombre del candidato"></label><label class="field"><span>Partido</span><input id="cParty" placeholder="Partido político"></label><label class="field"><span>Cargo</span><input id="cRole" required placeholder="Presidente, alcalde, diputado..."></label><label class="field span2"><span>Número de lista</span><input id="cList" type="number" min="1" step="1" placeholder="Opcional"></label><div class="actions span2"><button type="button" class="btn s" onclick="closeModal('mC')">Cancelar</button><button class="btn p">Registrar</button></div></form></div></div>
+<div id="mU" class="modal"><div class="modalbox"><div class="mh"><div><span class="ey">NUEVA CUENTA</span><h3>Crear usuario</h3></div><button class="close" onclick="closeModal('mU')">×</button></div><form id="uForm" class="formgrid"><label class="field"><span>Usuario</span><input id="uUsername" required minlength="3" placeholder="digitador01"></label><label class="field"><span>Correo</span><input id="uEmail" type="email" required placeholder="usuario@votagt.local"></label><label class="field"><span>Nombres</span><input id="uNames" required></label><label class="field"><span>Apellidos</span><input id="uLastnames" required></label><label class="field"><span>Contraseña inicial</span><input id="uPassword" type="password" minlength="8" required placeholder="Mínimo 8 caracteres"></label><label class="field"><span>Rol</span><select id="uRole" required></select></label><div class="actions span2"><button type="button" class="btn s" onclick="closeModal('mU')">Cancelar</button><button class="btn p">Crear usuario</button></div></form></div></div>
+<div id="mUEdit" class="modal"><div class="modalbox"><div class="mh"><div><span class="ey">GESTIONAR CUENTA</span><h3>Editar usuario</h3></div><button class="close" onclick="closeModal('mUEdit')">×</button></div><form id="uEditForm" class="formgrid"><input id="ueId" type="hidden"><label class="field"><span>Usuario</span><input id="ueUsername" required minlength="3"></label><label class="field"><span>Correo</span><input id="ueEmail" type="email" required></label><label class="field"><span>Nombres</span><input id="ueNames" required></label><label class="field"><span>Apellidos</span><input id="ueLastnames" required></label><label class="field"><span>Rol</span><select id="ueRole" required></select></label><label class="field"><span>Estado</span><select id="ueState" required><option>ACTIVO</option><option>BLOQUEADO</option><option>INACTIVO</option></select></label><div class="span2" style="font-size:.78rem;color:var(--muted)">Por seguridad, no puedes cambiar tu propio rol ni bloquear/inactivar tu propia cuenta durante la sesión actual.</div><div class="actions span2"><button type="button" class="btn s" onclick="closeModal('mUEdit')">Cancelar</button><button class="btn p">Guardar cambios</button></div></form></div></div>
+<script>
+/*
+ * VotaGT - Frontend integrado con la API REST actual.
+ * Rutas utilizadas:
+ *   GET  /api/v1/health
+ *   POST /api/v1/auth/login
+ *   GET  /api/v1/auth/perfil
+ *   GET    /api/v1/votaciones
+ *   POST   /api/v1/votaciones
+ *   DELETE /api/v1/votaciones/:id
+ *   GET    /api/v1/usuarios
+ *   GET    /api/v1/usuarios/roles
+ *   GET    /api/v1/usuarios/:id
+ *   POST   /api/v1/usuarios
+ *   PATCH  /api/v1/usuarios/:id
+ *   PATCH  /api/v1/usuarios/:id/rol
+ *   PATCH  /api/v1/usuarios/:id/estado
+ *   GET  /api/v1/votaciones/:votacionId/candidatos
+ *   POST /api/v1/votaciones/:votacionId/candidatos
+ *   GET  /api/v1/votaciones/:votacionId/mesas
+ *   POST /api/v1/votaciones/:votacionId/mesas
+ *   GET   /api/v1/votaciones/:votacionId/resultados
+ *   GET   /api/v1/votaciones/:votacionId/resultados/detalle?mesaId=&candidatoId=
+ *   POST  /api/v1/votaciones/:votacionId/resultados
+ *   PATCH /api/v1/votaciones/:votacionId/resultados
+ *   GET  /api/v1/votaciones/:votacionId/resultados/exportar?formato=csv|json
+ */
+
+const API = '/api/v1';
+
+const S = {
+    token: localStorage.getItem('votagt_token') || '',
+    user: safeJSON(localStorage.getItem('votagt_user')),
+    v: [],
+    vid: null,
+    m: [],
+    c: [],
+    r: null,
+    rSelected: null,
+    u: [],
+    roles: []
+};
+
+const $ = id => document.getElementById(id);
+const $$ = selector => [...document.querySelectorAll(selector)];
+
+function safeJSON(value) {
+    try {
+        return value ? JSON.parse(value) : null;
+    } catch {
+        return null;
+    }
+}
+
+function pick(...values) {
+    return values.find(v => v !== undefined && v !== null);
+}
+
+function validId(value) {
+    const n = Number(value);
+    return Number.isInteger(n) && n > 0 ? n : null;
+}
+
+function objectId(obj, type = '') {
+    if (!obj || typeof obj !== 'object') return null;
+
+    const candidates = type === 'votacion'
+        ? [obj.id, obj.votacionId, obj.votacion_id, obj.idVotacion, obj.id_votacion]
+        : type === 'mesa'
+        ? [obj.id, obj.mesaId, obj.mesa_id, obj.idMesa, obj.id_mesa]
+        : type === 'candidato'
+        ? [obj.id, obj.candidatoId, obj.candidato_id, obj.idCandidato, obj.id_candidato]
+        : [obj.id];
+
+    for (const candidate of candidates) {
+        const id = validId(candidate);
+        if (id) return id;
+    }
+
+    return null;
+}
+
+function unwrap(payload) {
+    if (payload == null) return payload;
+
+    // El backend VotaGT responde principalmente con:
+    // { mensaje: '...', datos: ... }
+    if (payload.datos !== undefined) return payload.datos;
+
+    // Compatibilidad con otras formas de respuesta.
+    if (payload.data !== undefined) return payload.data;
+    if (payload.result !== undefined) return payload.result;
+
+    return payload;
+}
+
+function listFrom(payload, preferred = []) {
+    if (Array.isArray(payload)) return payload;
+
+    const root = payload || {};
+    const keys = [
+        ...preferred,
+        'datos',
+        'data',
+        'items',
+        'rows',
+        'results',
+        'votaciones',
+        'mesas',
+        'candidatos',
+        'resultados'
+    ];
+
+    for (const key of keys) {
+        if (Array.isArray(root?.[key])) return root[key];
+    }
+
+    if (root.datos && typeof root.datos === 'object') {
+        for (const key of keys) {
+            if (Array.isArray(root.datos?.[key])) return root.datos[key];
+        }
+    }
+
+    if (root.data && typeof root.data === 'object') {
+        for (const key of keys) {
+            if (Array.isArray(root.data?.[key])) return root.data[key];
+        }
+    }
+
+    if (root.result && typeof root.result === 'object') {
+        for (const key of keys) {
+            if (Array.isArray(root.result?.[key])) return root.result[key];
+        }
+    }
+
+    return [];
+}
+
+function esc(value) {
+    return String(value ?? '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[c]));
+}
+
+function msg(text, kind = '') {
+    const el = $('toast');
+    el.textContent = text;
+    el.className = 'toast show ' + kind;
+
+    clearTimeout(msg.timer);
+    msg.timer = setTimeout(() => {
+        el.className = 'toast';
+    }, 3600);
+}
+
+function pill(status) {
+    const s = String(status || 'SIN ESTADO').toUpperCase();
+
+    let cls = '';
+    if (['ABIERTA', 'ACTIVA', 'ACTIVO', 'VALIDADA'].includes(s)) cls = 'ok';
+    if (['PROGRAMADA', 'PENDIENTE'].includes(s)) cls = 'info';
+    if (['CANCELADA', 'BLOQUEADO', 'INACTIVO', 'RETIRADO'].includes(s)) cls = 'bad';
+
+    return `<span class="pill ${cls}">${esc(s)}</span>`;
+}
+
+function fmt(date) {
+    if (!date) return '—';
+
+    const d = new Date(date);
+    if (Number.isNaN(d.getTime())) return esc(date);
+
+    return new Intl.DateTimeFormat('es-GT', {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+    }).format(d);
+}
+
+function errorMessage(payload, status) {
+    if (!payload) return `Error HTTP ${status}`;
+
+    if (typeof payload === 'string') return payload;
+
+    return (
+        payload.detail ||
+        payload.message ||
+        payload.title ||
+        payload.error ||
+        payload.type ||
+        `Error HTTP ${status}`
+    );
+}
+
+async function api(path, options = {}) {
+    const headers = {
+        Accept: 'application/json',
+        ...(options.headers || {})
+    };
+
+    if (S.token) {
+        headers.Authorization = 'Bearer ' + S.token;
+    }
+
+    let body = options.body;
+
+    if (
+        body !== undefined &&
+        body !== null &&
+        typeof body !== 'string' &&
+        !(body instanceof FormData)
+    ) {
+        headers['Content-Type'] = 'application/json';
+        body = JSON.stringify(body);
+    }
+
+    const response = await fetch(API + path, {
+        ...options,
+        headers,
+        body
+    });
+
+    const contentType = response.headers.get('content-type') || '';
+
+    let payload = null;
+
+    if (
+        contentType.includes('application/json') ||
+        contentType.includes('application/problem+json')
+    ) {
+        payload = await response.json().catch(() => null);
+    } else {
+        payload = await response.text().catch(() => '');
+    }
+
+    if (response.status === 401 && path !== '/auth/login') {
+        logout(false);
+        throw new Error('La sesión expiró. Inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+        const error = new Error(errorMessage(payload, response.status));
+        error.status = response.status;
+        error.payload = payload;
+        throw error;
+    }
+
+    return { response, payload };
+}
+
+function openModal(id) {
+    $(id)?.classList.add('open');
+}
+
+function closeModal(id) {
+    $(id)?.classList.remove('open');
+}
+
+window.openModal = openModal;
+window.closeModal = closeModal;
+
+async function health() {
+    try {
+        const { payload } = await api('/health');
+        const d = unwrap(payload) || {};
+
+        const redis = String(
+            pick(
+                d.redis,
+                d.services?.redis,
+                d.dependencies?.redis,
+                ''
+            )
+        ).toUpperCase();
+
+        const degraded =
+            redis.includes('DEGRA') ||
+            redis.includes('DOWN') ||
+            redis.includes('ERROR');
+
+        $('sideDot').className = 'dot ' + (degraded ? 'warn' : 'on');
+        $('sideStatus').textContent =
+            degraded
+                ? 'API activa · Redis degradado'
+                : 'API conectada';
+
+    } catch {
+        $('sideDot').className = 'dot off';
+        $('sideStatus').textContent = 'API sin conexión';
+    }
+}
+
+async function login(identificador, password) {
+    const { payload } = await api('/auth/login', {
+        method: 'POST',
+        body: {
+            identificador,
+            password
+        }
+    });
+
+    const data = unwrap(payload) || payload || {};
+
+    const token = pick(
+        data.token,
+        payload?.token
+    );
+
+    if (!token) {
+        throw new Error(
+            'La API autenticó, pero no devolvió el token JWT esperado.'
+        );
+    }
+
+    S.token = token;
+
+    S.user = pick(
+        data.usuario,
+        payload?.usuario,
+        { username: identificador }
+    );
+
+    localStorage.setItem(
+        'votagt_token',
+        S.token
+    );
+
+    localStorage.setItem(
+        'votagt_user',
+        JSON.stringify(S.user)
+    );
+}
+
+async function profile() {
+    try {
+        const { payload } = await api('/auth/perfil');
+        const d = unwrap(payload);
+
+        if (d && typeof d === 'object') {
+            S.user = pick(d.usuario, d.user, d);
+            localStorage.setItem('votagt_user', JSON.stringify(S.user));
+        }
+    } catch (error) {
+        // El perfil no impide usar la aplicación.
+        if (error.status && error.status !== 404) {
+            console.warn('Perfil:', error.message);
+        }
+    }
+}
+
+function renderUser() {
+    const u = S.user || {};
+
+    const name = pick(
+        u.username,
+        u.usuario,
+        u.identificador,
+        u.nombre,
+        'Usuario'
+    );
+
+    const role = pick(
+        u.roles,
+        u.rol,
+        u.role,
+        'Usuario'
+    );
+
+    $('who').textContent = name;
+    $('role').textContent = Array.isArray(role)
+        ? role.join(', ')
+        : role;
+
+    $('avatar').textContent =
+        String(name).trim().charAt(0).toUpperCase() || 'U';
+}
+
+function logout(show = true) {
+    S.token = '';
+    S.user = null;
+    S.v = [];
+    S.vid = null;
+    S.m = [];
+    S.c = [];
+    S.r = null;
+    S.u = [];
+    S.roles = [];
+
+    localStorage.removeItem('votagt_token');
+    localStorage.removeItem('votagt_user');
+
+    $('app').classList.add('hidden');
+    $('login').classList.remove('hidden');
+
+    if (location.hash) {
+        history.replaceState(
+            null,
+            '',
+            location.pathname + location.search
+        );
+    }
+
+    if (show) msg('Sesión cerrada.', 'ok');
+}
+
+const titles = {
+    dashboard: ['Dashboard', 'Resumen general del sistema electoral.'],
+    votaciones: ['Votaciones', 'Gestión de procesos electorales.'],
+    mesas: ['Mesas', 'Administración de mesas por votación.'],
+    candidatos: ['Candidatos', 'Administración de candidatos por votación.'],
+    resultados: ['Resultados', 'Registro y consolidación de votos.'],
+    reportes: ['Reportes', 'Exportación de resultados electorales.'],
+    usuarios: ['Usuarios y roles', 'Administración de acceso.'],
+    auditoria: ['Auditoría', 'Trazabilidad de eventos.']
+};
+
+// =========================================================
+// NAVEGACIÓN CON HASH
+// Ejemplos:
+//   http://localhost:3000/#/dashboard
+//   http://localhost:3000/#/votaciones
+//   http://localhost:3000/#/mesas
+// =========================================================
+
+function routeFromHash() {
+    const raw = location.hash
+        .replace(/^#\/?/, '')
+        .split('?')[0]
+        .trim()
+        .toLowerCase();
+
+    return Object.prototype.hasOwnProperty.call(titles, raw)
+        ? raw
+        : 'dashboard';
+}
+
+function routeHash(name) {
+    return `#/${name}`;
+}
+
+async function view(name, syncHash = true) {
+    if (!Object.prototype.hasOwnProperty.call(titles, name)) {
+        name = 'dashboard';
+    }
+
+    if (syncHash && location.hash !== routeHash(name)) {
+        location.hash = `/${name}`;
+        return;
+    }
+    $$('.view').forEach(x => x.classList.remove('active'));
+
+    $$('.nav button[data-view]').forEach(x => {
+        x.classList.toggle('active', x.dataset.view === name);
+    });
+
+    $('view-' + name)?.classList.add('active');
+
+    $('pageTitle').textContent = titles[name]?.[0] || name;
+    $('pageSub').textContent = titles[name]?.[1] || '';
+
+    $('side').classList.remove('open');
+
+    try {
+        if (name === 'dashboard') await dash();
+        if (name === 'votaciones') await loadV();
+        if (name === 'mesas') await refreshM();
+        if (name === 'candidatos') await refreshC();
+        if (name === 'resultados') await refreshR();
+        if (name === 'reportes') selects();
+        if (name === 'usuarios') await refreshU();
+    } catch (error) {
+        msg(error.message, 'bad');
+    }
+}
+
+/* =========================================================
+   VOTACIONES
+   ========================================================= */
+
+function normalizeVotacion(v) {
+    return {
+        ...v,
+        id: objectId(v, 'votacion'),
+        nombre: pick(v.nombre, v.name, 'Votación'),
+        descripcion: pick(v.descripcion, v.description, ''),
+        fechaInicio: pick(
+            v.fechaInicio,
+            v.fecha_inicio,
+            v.inicio,
+            v.fecha_inicio_votacion
+        ),
+        fechaFin: pick(
+            v.fechaFin,
+            v.fecha_fin,
+            v.fin,
+            v.fecha_fin_votacion
+        ),
+        estado: pick(v.estado, v.status, 'PROGRAMADA')
+    };
+}
+
+async function loadV() {
+    const { payload } = await api('/votaciones');
+
+    const raw = listFrom(payload, ['votaciones']);
+
+    S.v = raw
+        .map(normalizeVotacion)
+        .filter(v => {
+            if (!v.id) {
+                console.warn('Votación ignorada por no tener ID válido:', v);
+                return false;
+            }
+            return true;
+        });
+
+    if (
+        !validId(S.vid) ||
+        !S.v.some(v => v.id === S.vid)
+    ) {
+        S.vid = S.v[0]?.id || null;
+    }
+
+    selects();
+    renderV();
+
+    return S.v;
+}
+
+function fillElectionSelect(id) {
+    const select = $(id);
+    if (!select) return;
+
+    const previous = validId(S.vid) || validId(select.value);
+
+    if (!S.v.length) {
+        select.innerHTML =
+            '<option value="">No hay votaciones registradas</option>';
+        return;
+    }
+
+    select.innerHTML = S.v
+        .map(v =>
+            `<option value="${v.id}">${esc(v.nombre)}</option>`
+        )
+        .join('');
+
+    if (
+        previous &&
+        S.v.some(v => v.id === previous)
+    ) {
+        select.value = String(previous);
+    } else {
+        select.value = String(S.v[0].id);
+    }
+}
+
+function selects() {
+    [
+        'mesaV',
+        'candV',
+        'rV',
+        'csvV',
+        'jsonV'
+    ].forEach(fillElectionSelect);
+}
+
+function renderV() {
+    const query = ($('vSearch')?.value || '')
+        .toLowerCase()
+        .trim();
+
+    const filter = $('vFilter')?.value || '';
+
+    const list = S.v.filter(v => {
+        const text =
+            `${v.nombre} ${v.descripcion || ''}`.toLowerCase();
+
+        return (
+            (!query || text.includes(query)) &&
+            (!filter ||
+                String(v.estado).toUpperCase() === filter)
+        );
+    });
+
+    $('vRows').innerHTML = list.length
+        ? list.map(v => `
+            <tr>
+                <td>
+                    <b>${esc(v.nombre)}</b>
+                    <br>
+                    <small>${esc(v.descripcion || 'Sin descripción')}</small>
+                </td>
+                <td>${fmt(v.fechaInicio)}</td>
+                <td>${fmt(v.fechaFin)}</td>
+                <td>${pill(v.estado)}</td>
+                <td>
+    <button
+        class="btn t manage"
+        data-id="${v.id}">
+        Gestionar
+    </button>
+
+    <button
+        class="btn t delete-votacion"
+        data-id="${v.id}"
+        data-nombre="${esc(v.nombre)}">
+        Eliminar
+    </button>
+</td>
+            </tr>
+        `).join('')
+        : '<tr><td colspan="5">Sin votaciones.</td></tr>';
+
+    $$('.manage').forEach(button => {
+        button.onclick = async () => {
+            const id = validId(button.dataset.id);
+
+            if (!id) {
+                msg('La votación no tiene un ID válido.', 'bad');
+                return;
+            }
+
+            S.vid = id;
+            selects();
+
+            location.hash = '/resultados';
+        };
+    });
+
+    // =====================================================
+    // ELIMINAR VOTACIÓN
+    // =====================================================
+    $$('.delete-votacion').forEach(button => {
+        button.onclick = async () => {
+            const id = validId(button.dataset.id);
+            const nombre = button.dataset.nombre || 'esta votación';
+
+            if (!id) {
+                msg('La votación no tiene un ID válido.', 'bad');
+                return;
+            }
+
+            const confirmar = window.confirm(
+                `¿Está seguro de eliminar la votación "${nombre}"?\n\n` +
+                'La eliminación solo se permitirá si la votación no posee ' +
+                'mesas, candidatos, resultados u otra información relacionada.'
+            );
+
+            if (!confirmar) {
+                return;
+            }
+
+            const textoOriginal = button.textContent;
+
+            try {
+                button.disabled = true;
+                button.textContent = 'Eliminando...';
+
+                await api(
+                    `/votaciones/${id}`,
+                    {
+                        method: 'DELETE'
+                    }
+                );
+
+                if (String(S.vid) === String(id)) {
+                    S.vid = null;
+                    S.m = [];
+                    S.c = [];
+                    S.r = null;
+                }
+
+                await loadV();
+
+                msg(
+                    `Votación "${nombre}" eliminada correctamente.`,
+                    'ok'
+                );
+
+            } catch (error) {
+                console.error(
+                    'Error al eliminar la votación:',
+                    error
+                );
+
+                if (error.status === 409) {
+                    msg(
+                        error.message ||
+                        'No se puede eliminar la votación porque posee información relacionada.',
+                        'bad'
+                    );
+                } else {
+                    msg(
+                        error.message ||
+                        'No se pudo eliminar la votación.',
+                        'bad'
+                    );
+                }
+
+                if (document.body.contains(button)) {
+                    button.disabled = false;
+                    button.textContent = textoOriginal;
+                }
+            }
+        };
+    });
+}
+
+/* =========================================================
+   MESAS
+   ========================================================= */
+
+function normalizeMesa(m) {
+    return {
+        ...m,
+        id: objectId(m, 'mesa'),
+        codigo: pick(m.codigo, m.code, '—'),
+        nombre: pick(m.nombre, m.name, 'Mesa'),
+        ubicacion: pick(m.ubicacion, m.location, '—'),
+        departamento: pick(m.departamento, '—'),
+        municipio: pick(m.municipio, '—'),
+        estado: pick(m.estado, m.status, 'ACTIVA')
+    };
+}
+
+async function loadM(votacionId) {
+    const id = validId(votacionId);
+
+    if (!id) {
+        S.m = [];
+        return S.m;
+    }
+
+    const { payload } = await api(
+        `/votaciones/${id}/mesas`
+    );
+
+    S.m = listFrom(payload, ['mesas'])
+        .map(normalizeMesa)
+        .filter(m => {
+            if (!m.id) {
+                console.warn('Mesa sin ID válido:', m);
+            }
+            return !!m.id;
+        });
+
+    return S.m;
+}
+
+function renderM() {
+    $('mRows').innerHTML = S.m.length
+        ? S.m.map(m => `
+            <tr>
+                <td><b>${esc(m.codigo)}</b></td>
+                <td>${esc(m.nombre)}</td>
+                <td>${esc(m.ubicacion)}</td>
+                <td>${esc(m.municipio)}</td>
+                <td>${pill(m.estado)}</td>
+            </tr>
+        `).join('')
+        : '<tr><td colspan="5">Sin mesas registradas.</td></tr>';
+}
+
+async function refreshM() {
+    if (!S.v.length) {
+        await loadV();
+    }
+
+    const id =
+        validId($('mesaV')?.value) ||
+        validId(S.vid);
+
+    if (!id) {
+        S.m = [];
+        renderM();
+        return;
+    }
+
+    S.vid = id;
+
+    await loadM(id);
+    renderM();
+}
+
+/* =========================================================
+   CANDIDATOS
+   ========================================================= */
+
+function normalizeCandidato(c) {
+    return {
+        ...c,
+        id: objectId(c, 'candidato'),
+        nombre: pick(c.nombre, c.name, 'Candidato'),
+        partido: pick(c.partido, c.party, 'Sin partido'),
+        cargo: pick(c.cargo, c.role, '—'),
+        numeroLista: pick(
+            c.numeroLista,
+            c.numero_lista,
+            c.lista,
+            '—'
+        ),
+        estado: pick(c.estado, c.status, 'ACTIVO')
+    };
+}
+
+async function loadC(votacionId) {
+    const id = validId(votacionId);
+
+    if (!id) {
+        S.c = [];
+        return S.c;
+    }
+
+    const { payload } = await api(
+        `/votaciones/${id}/candidatos`
+    );
+
+    S.c = listFrom(payload, ['candidatos'])
+        .map(normalizeCandidato)
+        .filter(c => {
+            if (!c.id) {
+                console.warn('Candidato sin ID válido:', c);
+            }
+            return !!c.id;
+        });
+
+    return S.c;
+}
+
+function renderC() {
+    $('candGrid').innerHTML = S.c.length
+        ? S.c.map(c => `
+            <article>
+                <h4>${esc(c.nombre)}</h4>
+                <p>${esc(c.partido)}</p>
+                <p><strong>Cargo:</strong> ${esc(c.cargo)}</p>
+                <small>
+                    Lista ${esc(c.numeroLista)}
+                    · ${esc(c.estado)}
+                </small>
+            </article>
+        `).join('')
+        : 'Sin candidatos registrados.';
+}
+
+async function refreshC() {
+    if (!S.v.length) {
+        await loadV();
+    }
+
+    const id =
+        validId($('candV')?.value) ||
+        validId(S.vid);
+
+    if (!id) {
+        S.c = [];
+        renderC();
+        return;
+    }
+
+    S.vid = id;
+
+    await loadC(id);
+    renderC();
+}
+
+/* =========================================================
+   RESULTADOS
+   ========================================================= */
+
+function resultDependencies() {
+    const mesaAnterior = validId($('rM')?.value);
+    const candidatoAnterior = validId($('rC')?.value);
+
+    $('rM').innerHTML = S.m.length
+        ? S.m.map(m => `
+            <option value="${m.id}">
+                ${esc(m.codigo)} · ${esc(m.nombre)}
+            </option>
+        `).join('')
+        : '<option value="">No hay mesas registradas</option>';
+
+    $('rC').innerHTML = S.c.length
+        ? S.c.map(c => `
+            <option value="${c.id}">
+                ${esc(c.nombre)} · ${esc(c.partido)}
+            </option>
+        `).join('')
+        : '<option value="">No hay candidatos registrados</option>';
+
+    if (
+        mesaAnterior &&
+        S.m.some(m => m.id === mesaAnterior)
+    ) {
+        $('rM').value = String(mesaAnterior);
+    }
+
+    if (
+        candidatoAnterior &&
+        S.c.some(c => c.id === candidatoAnterior)
+    ) {
+        $('rC').value = String(candidatoAnterior);
+    }
+}
+
+function setResultFormMode(resultado) {
+    S.rSelected = resultado || null;
+
+    if (S.rSelected) {
+        const votos = Number(S.rSelected.votos) || 0;
+
+        $('rVotes').value = String(votos);
+        $('rSubmit').textContent = 'Actualizar resultado';
+        $('rCurrent').innerHTML =
+            `<b>Resultado registrado:</b> ${votos.toLocaleString('es-GT')} votos. ` +
+            'Puedes modificar la cantidad y guardar la corrección.';
+        $('rCurrent').style.color = 'var(--b700)';
+        $('rCurrent').style.background = 'var(--b100)';
+    } else {
+        $('rVotes').value = '';
+        $('rSubmit').textContent = 'Registrar resultado';
+        $('rCurrent').textContent =
+            'No existe un resultado registrado para esta mesa y candidato.';
+        $('rCurrent').style.color = 'var(--muted)';
+        $('rCurrent').style.background = '#f6f9fc';
+    }
+}
+
+async function loadSelectedResult() {
+    const votacionId =
+        validId($('rV')?.value) ||
+        validId(S.vid);
+
+    const mesaId = validId($('rM')?.value);
+    const candidatoId = validId($('rC')?.value);
+
+    if (!votacionId || !mesaId || !candidatoId) {
+        S.rSelected = null;
+        $('rVotes').value = '';
+        $('rSubmit').textContent = 'Registrar resultado';
+        $('rCurrent').textContent =
+            'Selecciona una mesa y un candidato.';
+        $('rCurrent').style.color = 'var(--muted)';
+        $('rCurrent').style.background = '#f6f9fc';
+        return null;
+    }
+
+    const params = new URLSearchParams({
+        mesaId: String(mesaId),
+        candidatoId: String(candidatoId)
+    });
+
+    const { payload } = await api(
+        `/votaciones/${votacionId}/resultados/detalle?${params.toString()}`
+    );
+
+    const resultado = unwrap(payload);
+    setResultFormMode(resultado);
+
+    return resultado;
+}
+
+async function loadR(votacionId) {
+    const id = validId(votacionId);
+
+    if (!id) {
+        S.r = null;
+        renderR();
+        return;
+    }
+
+    const { payload } = await api(
+        `/votaciones/${id}/resultados`
+    );
+
+    S.r = unwrap(payload);
+    renderR();
+}
+
+function renderR() {
+    if (!S.r) {
+        $('rTotal').textContent = '0 votos';
+        $('rMeta').textContent = '0 mesas con resultados · caché —';
+        $('bars').textContent = 'No hay resultados disponibles.';
+        return;
+    }
+
+    const d = S.r;
+
+    /*
+     * Forma real devuelta por resultado.service.js:
+     *
+     * {
+     *   votacionId,
+     *   mesasConResultados,
+     *   totalVotosRegistrados,
+     *   candidatos: [...],
+     *   cache: 'HIT' | 'MISS'
+     * }
+     */
+    const items = listFrom(d, ['candidatos']);
+
+    const normalized = items.map(x => ({
+        id: pick(
+            x.candidatoId,
+            x.candidato_id,
+            x.id
+        ),
+        numeroLista: pick(
+            x.numero_lista,
+            x.numeroLista,
+            '—'
+        ),
+        nombre: pick(
+            x.nombre,
+            x.nombreCandidato,
+            x.nombre_candidato,
+            x.candidato_nombre,
+            'Candidato'
+        ),
+        partido: pick(
+            x.partido,
+            x.partido_candidato,
+            ''
+        ),
+        cargo: pick(
+            x.cargo,
+            x.cargo_candidato,
+            ''
+        ),
+        votos: Number(
+            pick(
+                x.totalVotos,
+                x.total_votos,
+                x.votos,
+                0
+            )
+        ) || 0,
+        porcentaje: pick(
+            x.porcentaje,
+            x.percentage
+        )
+    }));
+
+    const total = Number(
+        pick(
+            d.totalVotosRegistrados,
+            d.total_votos_registrados,
+            d.totalVotos,
+            d.total_votos,
+            normalized.reduce(
+                (sum, x) => sum + x.votos,
+                0
+            )
+        )
+    ) || 0;
+
+    const mesas = Number(
+        pick(
+            d.mesasConResultados,
+            d.mesas_con_resultados,
+            0
+        )
+    ) || 0;
+
+    const cache = String(
+        pick(d.cache, '—')
+    ).toUpperCase();
+
+    const max =
+        Math.max(
+            ...normalized.map(x => x.votos),
+            1
+        );
+
+    const electionName =
+        pick(
+            d.nombreVotacion,
+            d.nombre_votacion,
+            S.v.find(
+                v => v.id === validId(d.votacionId)
+            )?.nombre,
+            S.v.find(
+                v => v.id === S.vid
+            )?.nombre,
+            'Resultados'
+        );
+
+    $('rTitle').textContent = electionName;
+
+    $('rTotal').textContent =
+        total.toLocaleString('es-GT') +
+        ' votos';
+
+    $('rMeta').textContent =
+        `${mesas.toLocaleString('es-GT')} ` +
+        `${mesas === 1 ? 'mesa' : 'mesas'} con resultados` +
+        ` · caché ${cache}`;
+
+    $('bars').innerHTML = normalized.length
+        ? normalized.map(x => {
+
+            const percentage =
+                x.porcentaje !== undefined &&
+                x.porcentaje !== null
+                    ? Number(x.porcentaje)
+                    : (
+                        x.votos /
+                        Math.max(total, 1)
+                    ) * 100;
+
+            const width =
+                (x.votos / max) * 100;
+
+            const details = [
+                x.numeroLista !== '—'
+                    ? `Lista ${x.numeroLista}`
+                    : '',
+                x.partido,
+                x.cargo
+            ].filter(Boolean).join(' · ');
+
+            return `
+                <div class="bar">
+                    <b>${esc(x.nombre)}</b>
+                    ${
+                        details
+                            ? `<small>${esc(details)}</small>`
+                            : ''
+                    }
+                    <div class="track">
+                        <div
+                            class="fill"
+                            style="width:${Math.max(width, 1)}%">
+                        </div>
+                    </div>
+                    <span>
+                        ${x.votos.toLocaleString('es-GT')}
+                        votos ·
+                        ${
+                            Number.isFinite(percentage)
+                                ? percentage.toFixed(1)
+                                : '0.0'
+                        }%
+                    </span>
+                </div>
+            `;
+        }).join('')
+        : 'Todavía no hay resultados registrados.';
+}
+
+async function refreshR() {
+    if (!S.v.length) {
+        await loadV();
+    }
+
+    const id =
+        validId($('rV')?.value) ||
+        validId(S.vid);
+
+    if (!id) {
+        S.m = [];
+        S.c = [];
+        S.r = null;
+        S.rSelected = null;
+        resultDependencies();
+        setResultFormMode(null);
+        renderR();
+        return;
+    }
+
+    S.vid = id;
+
+    // Mantener todos los selectores en la misma votación.
+    selects();
+    $('rV').value = String(id);
+
+    const results = await Promise.allSettled([
+        loadM(id),
+        loadC(id)
+    ]);
+
+    results.forEach(result => {
+        if (result.status === 'rejected') {
+            console.warn(
+                'No se pudo cargar dependencia de resultados:',
+                result.reason
+            );
+        }
+    });
+
+    resultDependencies();
+
+    await loadR(id);
+    await loadSelectedResult();
+}
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+async function dash() {
+    if (!S.v.length) {
+        await loadV();
+    }
+
+    $('sv').textContent = S.v.length;
+
+    $('sa').textContent = S.v.filter(
+        v => String(v.estado).toUpperCase() === 'ABIERTA'
+    ).length;
+
+    $('recent').innerHTML = S.v.length
+        ? S.v.slice(0, 5).map(v => `
+            <div class="item">
+                <div>
+                    <b>${esc(v.nombre)}</b>
+                    <small>${fmt(v.fechaInicio)}</small>
+                </div>
+                ${pill(v.estado)}
+            </div>
+        `).join('')
+        : 'Sin votaciones.';
+
+    const id = validId(S.vid);
+
+    if (!id) {
+        $('sm').textContent = '0';
+        $('sc').textContent = '0';
+        return;
+    }
+
+    const [mesas, candidatos] =
+        await Promise.allSettled([
+            loadM(id),
+            loadC(id)
+        ]);
+
+    $('sm').textContent =
+        mesas.status === 'fulfilled'
+            ? S.m.length
+            : '—';
+
+    $('sc').textContent =
+        candidatos.status === 'fulfilled'
+            ? S.c.length
+            : '—';
+}
+
+/* =========================================================
+   USUARIOS Y ROLES
+   ========================================================= */
+
+function normalizeUsuario(u) {
+    const roles = Array.isArray(u.roles)
+        ? u.roles
+        : [pick(u.rol, u.role)].filter(Boolean);
+
+    return {
+        ...u,
+        id: validId(u.id),
+        username: pick(u.username, u.usuario, ''),
+        email: pick(u.email, ''),
+        nombres: pick(u.nombres, u.nombre, ''),
+        apellidos: pick(u.apellidos, ''),
+        estado: String(pick(u.estado, 'ACTIVO')).toUpperCase(),
+        roles,
+        ultimoLogin: pick(u.ultimo_login, u.ultimoLogin, null)
+    };
+}
+
+async function loadRoles() {
+    const { payload } = await api('/usuarios/roles');
+
+    S.roles = listFrom(payload, ['roles'])
+        .map(r => ({
+            id: validId(r.id),
+            nombre: String(pick(r.nombre, r.name, '')).toUpperCase()
+        }))
+        .filter(r => r.nombre);
+
+    fillRoleSelectors();
+
+    return S.roles;
+}
+
+function fillRoleSelectors() {
+    const options = S.roles.length
+        ? S.roles.map(r =>
+            `<option value="${esc(r.nombre)}">${esc(r.nombre)}</option>`
+        ).join('')
+        : '<option value="">No hay roles registrados</option>';
+
+    ['uRole', 'ueRole'].forEach(id => {
+        const select = $(id);
+        if (select) select.innerHTML = options;
+    });
+
+    const filter = $('uRoleFilter');
+    if (filter) {
+        const previous = filter.value;
+        filter.innerHTML =
+            '<option value="">Todos los roles</option>' + options;
+
+        if ([...filter.options].some(o => o.value === previous)) {
+            filter.value = previous;
+        }
+    }
+}
+
+async function loadUsers() {
+    const { payload } = await api('/usuarios');
+
+    S.u = listFrom(payload, ['usuarios'])
+        .map(normalizeUsuario)
+        .filter(u => !!u.id);
+
+    return S.u;
+}
+
+function renderUsers() {
+    const search = ($('uSearch')?.value || '')
+        .trim()
+        .toLowerCase();
+
+    const roleFilter = String($('uRoleFilter')?.value || '')
+        .toUpperCase();
+
+    const stateFilter = String($('uStateFilter')?.value || '')
+        .toUpperCase();
+
+    const list = S.u.filter(u => {
+        const text = [
+            u.username,
+            u.email,
+            u.nombres,
+            u.apellidos,
+            ...(u.roles || [])
+        ].join(' ').toLowerCase();
+
+        const hasRole =
+            !roleFilter ||
+            (u.roles || []).some(
+                r => String(r).toUpperCase() === roleFilter
+            );
+
+        return (
+            (!search || text.includes(search)) &&
+            hasRole &&
+            (!stateFilter || u.estado === stateFilter)
+        );
+    });
+
+    $('uRows').innerHTML = list.length
+        ? list.map(u => `
+            <tr>
+                <td>
+                    <div class="user-name">
+                        <b>${esc(u.username)}</b>
+                        <small>${esc(u.email || 'Sin correo')}</small>
+                    </div>
+                </td>
+                <td>${esc(`${u.nombres} ${u.apellidos}`.trim() || '—')}</td>
+                <td>${(u.roles || []).length
+                    ? (u.roles || []).map(r => `<span class="pill info">${esc(r)}</span>`).join(' ')
+                    : '<span class="pill">SIN ROL</span>'}
+                </td>
+                <td>${pill(u.estado)}</td>
+                <td>${u.ultimoLogin ? fmt(u.ultimoLogin) : 'Nunca'}</td>
+                <td>
+                    <button
+                        class="btn t manage-user"
+                        data-id="${u.id}">
+                        Gestionar
+                    </button>
+                </td>
+            </tr>
+        `).join('')
+        : '<tr><td colspan="6">Sin usuarios encontrados.</td></tr>';
+
+    $$('.manage-user').forEach(button => {
+        button.onclick = () => {
+            openUserEdit(button.dataset.id);
+        };
+    });
+}
+
+async function refreshU() {
+    await Promise.all([
+        loadRoles(),
+        loadUsers()
+    ]);
+
+    renderUsers();
+}
+
+function openUserEdit(idValue) {
+    const id = validId(idValue);
+    const usuario = S.u.find(u => u.id === id);
+
+    if (!usuario) {
+        msg('No fue posible localizar el usuario.', 'bad');
+        return;
+    }
+
+    $('ueId').value = String(usuario.id);
+    $('ueUsername').value = usuario.username || '';
+    $('ueEmail').value = usuario.email || '';
+    $('ueNames').value = usuario.nombres || '';
+    $('ueLastnames').value = usuario.apellidos || '';
+    $('ueRole').value = usuario.roles?.[0] || '';
+    $('ueState').value = usuario.estado || 'ACTIVO';
+
+    $('uEditForm').dataset.originalRole = usuario.roles?.[0] || '';
+    $('uEditForm').dataset.originalState = usuario.estado || 'ACTIVO';
+
+    openModal('mUEdit');
+}
+
+/* =========================================================
+   REPORTES
+   ========================================================= */
+
+async function download(format, selectId) {
+    const id = validId($(selectId)?.value);
+
+    if (!id) {
+        msg('Selecciona una votación válida.', 'bad');
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${API}/votaciones/${id}/resultados/exportar?formato=${format}`,
+            {
+                headers: {
+                    Authorization: 'Bearer ' + S.token
+                }
+            }
+        );
+
+        if (!response.ok) {
+            const ct =
+                response.headers.get('content-type') || '';
+
+            let payload = null;
+
+            if (
+                ct.includes('json') ||
+                ct.includes('problem+json')
+            ) {
+                payload = await response.json().catch(() => null);
+            }
+
+            throw new Error(
+                errorMessage(payload, response.status)
+            );
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `resultados-votacion-${id}.${format}`;
+
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        URL.revokeObjectURL(url);
+
+        msg(
+            `Reporte ${format.toUpperCase()} descargado.`,
+            'ok'
+        );
+
+    } catch (error) {
+        msg(error.message, 'bad');
+    }
+}
+
+/* =========================================================
+   EVENTOS
+   ========================================================= */
+
+$('loginForm').onsubmit = async event => {
+    event.preventDefault();
+
+    $('loginError').classList.add('hidden');
+
+    try {
+        await login(
+            $('loginUser').value.trim(),
+            $('loginPass').value
+        );
+
+        $('login').classList.add('hidden');
+        $('app').classList.remove('hidden');
+
+        await profile();
+        renderUser();
+
+        await loadV();
+        await health();
+
+        const initialView = routeFromHash();
+
+        if (!location.hash) {
+            location.hash = '/dashboard';
+        } else {
+            await view(initialView, false);
+        }
+
+    } catch (error) {
+        $('loginError').textContent = error.message;
+        $('loginError').classList.remove('hidden');
+    }
+};
+
+$('logout').onclick = () => logout();
+
+$('hamb').onclick = () => {
+    $('side').classList.toggle('open');
+};
+
+$$('[data-view]').forEach(button => {
+    button.onclick = () => {
+        location.hash = `/${button.dataset.view}`;
+    };
+});
+
+$$('[data-go]').forEach(button => {
+    button.onclick = () => {
+        location.hash = `/${button.dataset.go}`;
+    };
+});
+
+// Permite usar atrás/adelante del navegador y abrir una sección
+// directamente con una URL como /#/resultados.
+window.addEventListener('hashchange', async () => {
+    if (!S.token) return;
+
+    await view(
+        routeFromHash(),
+        false
+    );
+});
+
+$('vSearch').oninput = renderV;
+$('vFilter').onchange = renderV;
+
+$('uSearch').oninput = renderUsers;
+$('uRoleFilter').onchange = renderUsers;
+$('uStateFilter').onchange = renderUsers;
+
+$('mesaV').onchange = async () => {
+    S.vid = validId($('mesaV').value);
+    selects();
+    await refreshM();
+};
+
+$('candV').onchange = async () => {
+    S.vid = validId($('candV').value);
+    selects();
+    await refreshC();
+};
+
+$('rV').onchange = async () => {
+    S.vid = validId($('rV').value);
+    selects();
+    await refreshR();
+};
+
+$('rM').onchange = async () => {
+    try {
+        await loadSelectedResult();
+    } catch (error) {
+        msg(error.message, 'bad');
+    }
+};
+
+$('rC').onchange = async () => {
+    try {
+        await loadSelectedResult();
+    } catch (error) {
+        msg(error.message, 'bad');
+    }
+};
+
+$('refreshR').onclick = refreshR;
+
+$('csvBtn').onclick = () =>
+    download('csv', 'csvV');
+
+$('jsonBtn').onclick = () =>
+    download('json', 'jsonV');
+
+/* Crear usuario */
+$('uForm').onsubmit = async event => {
+    event.preventDefault();
+
+    const role = $('uRole').value;
+
+    if (!role) {
+        msg('Selecciona un rol para el usuario.', 'bad');
+        return;
+    }
+
+    try {
+        await api('/usuarios', {
+            method: 'POST',
+            body: {
+                username: $('uUsername').value.trim(),
+                email: $('uEmail').value.trim(),
+                nombres: $('uNames').value.trim(),
+                apellidos: $('uLastnames').value.trim(),
+                password: $('uPassword').value,
+                rol: role
+            }
+        });
+
+        closeModal('mU');
+        event.target.reset();
+
+        await refreshU();
+
+        msg('Usuario creado correctamente.', 'ok');
+
+    } catch (error) {
+        msg(error.message, 'bad');
+    }
+};
+
+/* Editar usuario / rol / estado */
+$('uEditForm').onsubmit = async event => {
+    event.preventDefault();
+
+    const id = validId($('ueId').value);
+
+    if (!id) {
+        msg('El usuario no tiene un ID válido.', 'bad');
+        return;
+    }
+
+    const newRole = $('ueRole').value;
+    const newState = $('ueState').value;
+    const originalRole = event.target.dataset.originalRole || '';
+    const originalState = event.target.dataset.originalState || '';
+
+    try {
+        await api(`/usuarios/${id}`, {
+            method: 'PATCH',
+            body: {
+                username: $('ueUsername').value.trim(),
+                email: $('ueEmail').value.trim(),
+                nombres: $('ueNames').value.trim(),
+                apellidos: $('ueLastnames').value.trim()
+            }
+        });
+
+        if (newRole && newRole !== originalRole) {
+            await api(`/usuarios/${id}/rol`, {
+                method: 'PATCH',
+                body: {
+                    rol: newRole
+                }
+            });
+        }
+
+        if (newState && newState !== originalState) {
+            await api(`/usuarios/${id}/estado`, {
+                method: 'PATCH',
+                body: {
+                    estado: newState
+                }
+            });
+        }
+
+        closeModal('mUEdit');
+
+        await refreshU();
+
+        msg('Usuario actualizado correctamente.', 'ok');
+
+    } catch (error) {
+        msg(error.message, 'bad');
+    }
+};
+
+/* Crear votación */
+$('vForm').onsubmit = async event => {
+    event.preventDefault();
+
+    const start = new Date($('vStart').value);
+    const end = new Date($('vEnd').value);
+
+    if (
+        Number.isNaN(start.getTime()) ||
+        Number.isNaN(end.getTime())
+    ) {
+        msg('Las fechas de la votación no son válidas.', 'bad');
+        return;
+    }
+
+    if (end <= start) {
+        msg(
+            'La fecha de fin debe ser posterior al inicio.',
+            'bad'
+        );
+        return;
+    }
+
+    try {
+        const { payload } = await api('/votaciones', {
+            method: 'POST',
+            body: {
+                nombre: $('vName').value.trim(),
+                descripcion: $('vDesc').value.trim(),
+                fechaInicio: start.toISOString(),
+                fechaFin: end.toISOString()
+            }
+        });
+
+        // Si la respuesta trae el ID, se conserva como seleccionada.
+        const createdData = unwrap(payload);
+
+        const created =
+            normalizeVotacion(
+                createdData?.votacion ||
+                createdData
+            );
+
+        if (created?.id) {
+            S.vid = created.id;
+        }
+
+        closeModal('mV');
+        event.target.reset();
+
+        await loadV();
+
+        msg('Votación creada correctamente.', 'ok');
+
+    } catch (error) {
+        msg(error.message, 'bad');
+    }
+};
+
+/* Crear mesa */
+$('mForm').onsubmit = async event => {
+    event.preventDefault();
+
+    const id =
+        validId($('mesaV').value) ||
+        validId(S.vid);
+
+    if (!id) {
+        msg('Selecciona una votación válida.', 'bad');
+        return;
+    }
+
+    try {
+        await api(
+            `/votaciones/${id}/mesas`,
+            {
+                method: 'POST',
+                body: {
+                    codigo: $('mCode').value.trim(),
+                    nombre: $('mName').value.trim(),
+                    ubicacion: $('mLoc').value.trim(),
+                    departamento: $('mDept').value.trim(),
+                    municipio: $('mMun').value.trim()
+                }
+            }
+        );
+
+        closeModal('mM');
+        event.target.reset();
+
+        S.vid = id;
+        selects();
+
+        await refreshM();
+
+        msg('Mesa registrada correctamente.', 'ok');
+
+    } catch (error) {
+        msg(error.message, 'bad');
+    }
+};
+
+/* Crear candidato */
+$('cForm').onsubmit = async event => {
+    event.preventDefault();
+
+    const id =
+        validId($('candV').value) ||
+        validId(S.vid);
+
+    if (!id) {
+        msg('Selecciona una votación válida.', 'bad');
+        return;
+    }
+
+    const numeroLista =
+        $('cList').value === ''
+            ? null
+            : Number($('cList').value);
+
+    if (!$('cName').value.trim() || !$('cRole').value.trim()) {
+        msg('El nombre y el cargo del candidato son obligatorios.', 'bad');
+        return;
+    }
+
+    if (
+        numeroLista !== null &&
+        (!Number.isInteger(numeroLista) || numeroLista <= 0)
+    ) {
+        msg('El número de lista debe ser un entero mayor que cero.', 'bad');
+        return;
+    }
+
+    try {
+        await api(
+            `/votaciones/${id}/candidatos`,
+            {
+                method: 'POST',
+                body: {
+                    nombre: $('cName').value.trim(),
+                    partido: $('cParty').value.trim(),
+                    cargo: $('cRole').value.trim(),
+                    numeroLista
+                }
+            }
+        );
+
+        closeModal('mC');
+        event.target.reset();
+
+        S.vid = id;
+        selects();
+
+        await refreshC();
+
+        msg(
+            'Candidato registrado correctamente.',
+            'ok'
+        );
+
+    } catch (error) {
+        msg(error.message, 'bad');
+    }
+};
+
+/* Registrar o actualizar resultado */
+$('rForm').onsubmit = async event => {
+    event.preventDefault();
+
+    const votacionId =
+        validId($('rV').value) ||
+        validId(S.vid);
+
+    const mesaId =
+        validId($('rM').value);
+
+    const candidatoId =
+        validId($('rC').value);
+
+    const votos =
+        Number($('rVotes').value);
+
+    if (!votacionId) {
+        msg('Selecciona una votación válida.', 'bad');
+        return;
+    }
+
+    if (!mesaId) {
+        msg(
+            'Debes registrar una mesa antes de capturar resultados.',
+            'bad'
+        );
+        return;
+    }
+
+    if (!candidatoId) {
+        msg(
+            'Debes registrar un candidato antes de capturar resultados.',
+            'bad'
+        );
+        return;
+    }
+
+    if (
+        !Number.isInteger(votos) ||
+        votos < 0
+    ) {
+        msg(
+            'La cantidad de votos debe ser un entero mayor o igual a cero.',
+            'bad'
+        );
+        return;
+    }
+
+    const actualizando = !!S.rSelected?.id;
+
+    if (actualizando) {
+        const votosActuales = Number(S.rSelected.votos) || 0;
+
+        const confirmar = window.confirm(
+            `¿Actualizar el resultado de ${votosActuales} a ${votos} votos?
+
+` +
+            'La corrección quedará registrada en auditoría.'
+        );
+
+        if (!confirmar) return;
+    }
+
+    try {
+        await api(
+            `/votaciones/${votacionId}/resultados`,
+            {
+                method: actualizando ? 'PATCH' : 'POST',
+                body: {
+                    mesaId,
+                    candidatoId,
+                    votos
+                }
+            }
+        );
+
+        S.vid = votacionId;
+
+        // El backend invalida Redis tanto al registrar como al corregir.
+        await loadR(votacionId);
+        await loadSelectedResult();
+
+        msg(
+            actualizando
+                ? 'Resultado actualizado correctamente.'
+                : 'Resultado registrado correctamente.',
+            'ok'
+        );
+
+    } catch (error) {
+        if (error.status === 409) {
+            try {
+                await loadSelectedResult();
+            } catch {}
+
+            msg(
+                'Ya existe un resultado para esta mesa y candidato. Se cargó para que puedas editarlo.',
+                'bad'
+            );
+            return;
+        }
+
+        msg(error.message, 'bad');
+    }
+};
+
+/* =========================================================
+   INICIO
+   ========================================================= */
+
+async function boot() {
+    await health();
+
+    if (!S.token) return;
+
+    try {
+        $('login').classList.add('hidden');
+        $('app').classList.remove('hidden');
+
+        await profile();
+        renderUser();
+
+        await loadV();
+
+        const initialView = routeFromHash();
+
+        if (!location.hash) {
+            location.hash = '/dashboard';
+        } else {
+            await view(initialView, false);
+        }
+
+    } catch (error) {
+        console.error(error);
+        logout(false);
+    }
+}
+
+boot();
+</script>
+<!-- VotaGT Frontend Final HASH - API Node/Express + CRUD Usuarios/Roles -->
+</body></html>

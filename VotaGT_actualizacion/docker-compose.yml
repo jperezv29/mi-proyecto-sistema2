@@ -1,0 +1,54 @@
+services:
+
+  redis:
+    image: redis:7-alpine
+    container_name: votagt-redis
+
+    ports:
+      - "6379:6379"
+
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+
+    volumes:
+      - redis_data:/data
+
+    restart: unless-stopped
+
+
+  mongodb:
+    image: mongo:7
+    container_name: votagt-mongodb
+
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - mongo_data:/data/db
+
+    restart: unless-stopped
+
+
+  neo4j:
+    image: neo4j:5-community
+    container_name: votagt-neo4j
+
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+
+    environment:
+      NEO4J_AUTH: neo4j/VotaGT2026Neo4j
+
+    volumes:
+      - neo4j_data:/data
+
+    restart: unless-stopped
+
+
+volumes:
+  redis_data:
+  mongo_data:
+  neo4j_data:

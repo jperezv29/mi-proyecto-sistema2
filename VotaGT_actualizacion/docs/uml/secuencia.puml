@@ -1,0 +1,108 @@
+@startuml
+title VotaGT - Diagrama de Secuencia\nRegistro de Resultado Electoral
+
+autonumber
+
+actor Usuario
+
+participant "ResultadoRoutes" as Route
+participant "Auth Middleware" as Auth
+participant "Permission Middleware" as Perm
+participant "ResultadoController" as Controller
+participant "ResultadoService" as Service
+participant "ResultadoRepository" as Repo
+database "PostgreSQL" as PG
+participant "CacheGateway" as Cache
+participant "CircuitBreaker" as CB
+database "Redis" as Redis
+participant "EventBus" as Event
+participant "AuditObserver" as Observer
+participant "AuditService" as Audit
+database "MongoDB" as Mongo
+
+
+Usuario -> Route : POST /api/v1/votaciones/{id}/resultados\nBearer JWT + datos
+
+Route -> Auth : verificarToken()
+
+alt Token inválido o inexistente
+    Auth --> Usuario : HTTP 401\napplication/problem+json
+else Token válido
+
+    Auth -> Perm : requierePermiso("RESULTADOS_REGISTRAR")
+
+    alt Usuario sin permiso
+        Perm --> Usuario : HTTP 403\napplication/problem+json
+    else Permiso válido
+
+        Perm -> Controller : registrarResultado(req, res)
+
+        Controller -> Service : registrarResultado(votacionId,\ndatos, usuarioId, username)
+
+        Service -> Repo : existeVotacion(votacionId)
+        Repo -> PG : SELECT votación
+        PG --> Repo : resultado
+        Repo --> Service : existe / no existe
+
+        alt Votación inexistente
+            Service --> Controller : Error 404
+            Controller --> Usuario : HTTP 404\napplication/problem+json
+        else Votación válida
+
+            Service -> Repo : obtenerMesa(votacionId, mesaId)
+            Repo -> PG : SELECT mesa
+            PG --> Repo : mesa
+            Repo --> Service : mesa
+
+            Service -> Repo : obtenerCandidato(votacionId, candidatoId)
+            Repo -> PG : SELECT candidato
+            PG --> Repo : candidato
+            Repo --> Service : candidato
+
+            Service -> Repo : buscarResultado(mesaId, candidatoId)
+            Repo -> PG : SELECT resultado existente
+            PG --> Repo : resultado / null
+            Repo --> Service : resultado / null
+
+            alt Resultado duplicado
+                Service --> Controller : Error 409
+                Controller --> Usuario : HTTP 409\napplication/problem+json
+            else Resultado permitido
+
+                Service -> Repo : crearResultado(...)
+                Repo -> PG : INSERT resultado
+                PG --> Repo : resultado creado
+                Repo --> Service : resultado
+
+                Service -> Cache : eliminar(clave)
+
+                Cache -> CB : ejecutar(DEL)
+
+                alt Redis disponible
+                    CB -> Redis : DEL votagt:resultados:votacion:{id}
+                    Redis --> CB : OK
+                    CB --> Cache : true
+                else Redis no disponible
+                    CB --> Cache : fallback false
+                end
+
+                Cache --> Service : cache invalidada / omitida
+
+                Service -> Event : emit("AUDITORIA", evento)
+
+                Event -> Observer : AUDITORIA
+
+                Observer -> Audit : registrarEvento(evento)
+
+                Audit -> Mongo : insertOne(evento)
+                Mongo --> Audit : confirmado
+
+                Service --> Controller : resultado creado
+
+                Controller --> Usuario : HTTP 201\nResultado registrado
+            end
+        end
+    end
+end
+
+@enduml
